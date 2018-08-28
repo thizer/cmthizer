@@ -1,0 +1,26 @@
+{
+  "name": "thizer/cms",
+  "description": "Content Management System",
+  "license": "private",
+  "keywords": ["cms"],
+  "homepage": "https://thizer.com",
+  "authors": [{
+      "name": "Thizer Apps",
+      "email": "thizerdev@gmail.com"
+  }],
+  "support": { "email":"thizerdev@gmail.com" },
+  "require": {
+    "php": ">=7.0",
+    "erusev/parsedown": "dev-master",
+    "verot/class.upload.php": "dev-master",
+    "phpmailer/phpmailer": "dev-master"
+  },
+  "autoload": {
+    "classmap": ["./core/CmThizer.php"]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CmThizer\\": "./core/"
+    }
+  }
+}
