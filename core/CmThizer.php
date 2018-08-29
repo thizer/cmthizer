@@ -28,6 +28,7 @@ class CmThizer {
         throw new Exception("404 - Page not found", 404);
       }
       
+      // Variables to be appended to the view
       $route = $this->routes[$this->uri->getRoute()];
       $action = $route;
       $vars = $route;
@@ -47,6 +48,8 @@ class CmThizer {
         }
       }
       
+      // Including here, all these variables defined above
+      // are accessible on the view
       include './site/'.$configs['template'];
       
     } catch (Exception $ex) {
@@ -91,28 +94,7 @@ class CmThizer {
   private function resolveRoutes(): CmThizer {
     
     $site = './site';
-    
-    /**
-     * Nos da a lista de conteudo da pasta site
-     * 
-     * ## RECURSIVA ##
-     */
-    function scandirRecursive($dirname): array {
-      $items = array();
-      if (is_dir($dirname)) {
-        foreach (scandir($dirname) as $item) {
-          if (!in_array($item, array('.', '..'))) {
-            if (is_dir($dirname.DIRECTORY_SEPARATOR.$item)) {
-              $items[$dirname.DIRECTORY_SEPARATOR.$item] = scandirRecursive($dirname.DIRECTORY_SEPARATOR.$item);
-            } else {
-              $items[] = $item;
-            }
-          }
-        }
-      }
-      return $items;
-    }
-    $dirItems = scandirRecursive($site);
+    $dirItems = $this->scandirRecursive($site);
     
     /**
      * Outra recursiva, agora para organizar os dados da pagina
@@ -139,7 +121,9 @@ class CmThizer {
           
           $config['content'] = $folder.'/content.md';
           
-          $routes['/'.ltrim($config['configs']['uri'], '/')] = $config;
+          $uri = '/'.ltrim($config['configs']['uri'], '/');
+          
+          $routes[$uri] = $config;
         } else if(is_array($content)) {
           $routes += resolve($content);
         }
@@ -161,6 +145,27 @@ class CmThizer {
     }
     
     return $this;
+  }
+  
+  /**
+   * Nos da a lista de conteudo da pasta site
+   * 
+   * ## RECURSIVA ##
+   */
+  private function scandirRecursive($dirname): array {
+    $items = array();
+    if (is_dir($dirname)) {
+      foreach (scandir($dirname) as $item) {
+        if (!in_array($item, array('.', '..'))) {
+          if (is_dir($dirname.DIRECTORY_SEPARATOR.$item)) {
+            $items[$dirname.DIRECTORY_SEPARATOR.$item] = $this->scandirRecursive($dirname.DIRECTORY_SEPARATOR.$item);
+          } else {
+            $items[] = $item;
+          }
+        }
+      }
+    }
+    return $items;
   }
 }
 
