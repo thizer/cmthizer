@@ -18,15 +18,42 @@ class CmThizer {
       
       $this->uri = new \CmThizer\Uri();
       
+      // Resolver configuracoes
       $this->resolveParams();
       $this->resolvePost();
       $this->resolveRoutes();
       
+      // Check if route exists
+      if (!isset($this->routes[$this->uri->getRoute()])) {
+        throw new Exception("404 - Page not found", 404);
+      }
+      
+      $route = $this->routes[$this->uri->getRoute()];
+      $action = $route;
+      $vars = $route;
+      $configs = $route['configs'];
+      
+      // Load content
+      $content = "";
+      if ($route['content'] && file_exists($route['content'])) {
+        
+        // Allowed to read file?
+        if (is_readable($route['content'])) {
+          $parseDown = new Parsedown();
+          $content = $parseDown->parse(file_get_contents($route['content']));
+          
+        } else {
+          throw new Exception("Markdown content file ({$route['content']}) is not readable");
+        }
+      }
+      
+      include './site/'.$configs['template'];
+      
     } catch (Exception $ex) {
       dump($ex);
+    } catch (Error $err) {
+      dump($err);
     }
-    
-    // $teste = require './site/template.phtml';
   }
   
   public function setTemplate($name): CmThizer {
@@ -92,15 +119,27 @@ class CmThizer {
      * 
      * ## RECURSIVA ##
      */
-    function resolve(array $items) {
+    function resolve(array $items): array {
       $routes = array();
+      
+      $defaultValues = array(
+        'title' => 'My website',
+        'uri' => '/',
+        'template' => 'template.phtml'
+      );
+      
       foreach ($items as $folder => $content) {
         if (is_dir($folder) && in_array('config.json', $content) && in_array('content.md', $content)) {
-
-          $config = json_decode(file_get_contents($folder.'/config.json'), true);
+          
+          // Get configs from config.json file
+          $config['configs'] = array_merge(
+            $defaultValues,
+            json_decode(file_get_contents($folder.'/config.json'), true)
+          );
+          
           $config['content'] = $folder.'/content.md';
-
-          $routes[$config['uri']] = $config;
+          
+          $routes['/'.ltrim($config['configs']['uri'], '/')] = $config;
         } else if(is_array($content)) {
           $routes += resolve($content);
         }
@@ -108,6 +147,18 @@ class CmThizer {
       return $routes;
     }
     $this->routes = resolve($dirItems);
+    
+    // If was not created a home landing page, we do it
+    if (!isset($this->routes['/'])) {
+      $this->routes['/'] = array(
+          'configs' => array(
+            'title' => 'My website',
+            'uri' => '/',
+            'template' => 'landing-page.phtml'
+          ),
+          'content' => ''
+      );
+    }
     
     return $this;
   }

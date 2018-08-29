@@ -30,5 +30,3 @@ if (file_exists('vendor/autoload.php')) {
 }
 
 $cms = new CmThizer();
-
-dump($cms);
