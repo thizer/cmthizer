@@ -30,9 +30,8 @@ class CmThizer {
       
       // Variables to be appended to the view
       $route = $this->routes[$this->uri->getRoute()];
-      $action = $route;
-      $vars = $route;
       $configs = $route['configs'];
+      $basePath = $this->uri->getBasePath();
       
       // Load content
       $content = "";
@@ -57,6 +56,10 @@ class CmThizer {
     } catch (Error $err) {
       dump($err);
     }
+  }
+  
+  public function getUrl($link = ''): string {
+    return getenv('REQUEST_SCHEME').'://'.getenv('HTTP_HOST').$this->uri->getBasePath().'/'. trim($link, '/');
   }
   
   public function setTemplate($name): CmThizer {

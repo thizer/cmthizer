@@ -11,12 +11,12 @@ class Uri {
   
   public function __construct() {
     
-    $root = $_SERVER['DOCUMENT_ROOT'];
-    $uri = preg_replace("/\?.+/", "", $_SERVER['REQUEST_URI']);
+    $root = getenv('DOCUMENT_ROOT');
+    $uri = preg_replace("/\?.+/", "", getenv('REQUEST_URI'));
     
     // Split parts of URI
     $uriParts = explode(DIRECTORY_SEPARATOR, trim($uri, DIRECTORY_SEPARATOR));
-    $basePath = getenv('REQUEST_SCHEME').'://'.getenv('HTTP_HOST').DIRECTORY_SEPARATOR;
+    $basePath = '';
     $route = '';
     
     foreach ($uriParts as $part) {
@@ -29,7 +29,7 @@ class Uri {
     }
     
     $this->docRoot = $root;
-    $this->basePath = rtrim($basePath, '/');
+    $this->basePath = '/'.trim($basePath, '/');
     $this->route = '/'.trim($route, '/');
   }
   
