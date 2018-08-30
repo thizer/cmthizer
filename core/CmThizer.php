@@ -5,6 +5,8 @@ class CmThizer {
   
   private $landingPage = 'landing-page.phtml';
   
+  private $sitePath = './site/';
+  
   private $uri;
   
   private $params = array();
@@ -23,6 +25,15 @@ class CmThizer {
       $this->resolvePost();
       $this->resolveRoutes();
       
+    } catch (Exception $ex) {
+      dump($ex);
+    } catch (Error $err) {
+      dump($err);
+    }
+  }
+  
+  public function run(): CmThizer {
+    try {
       // Check if route exists
       if (!isset($this->routes[$this->uri->getRoute()])) {
         throw new Exception("404 - Page not found", 404);
@@ -31,7 +42,11 @@ class CmThizer {
       // Variables to be appended to the view
       $route = $this->routes[$this->uri->getRoute()];
       $configs = $route['configs'];
-      $basePath = $this->uri->getBasePath();
+      
+      // Caminho base
+      // (essa concatenacao sem sentido existe apenas para desmarcar var nao utilizada)
+      $basePath = '';
+      $basePath .= $this->uri->getBasePath();
       
       // Load content
       $content = "";
@@ -49,20 +64,27 @@ class CmThizer {
       
       // Including here, all these variables defined above
       // are accessible on the view
-      include './site/'.$configs['template'];
+      include $this->sitePath.$configs['template'];
       
     } catch (Exception $ex) {
       dump($ex);
-    } catch (Error $err) {
-      dump($err);
     }
+    return $this;
   }
   
-  public function getUrl($link = ''): string {
+  public function getUrl(string $link = ''): string {
     return getenv('REQUEST_SCHEME').'://'.getenv('HTTP_HOST').$this->uri->getBasePath().'/'. trim($link, '/');
   }
   
-  public function setTemplate($name): CmThizer {
+  public function getBaseUrl(string $link = ''): string {
+    return $this->getUrl($link);
+  }
+  
+  public function url(string $link = ''): string {
+    return $this->getUrl($link);
+  }
+  
+  public function setTemplate(string $name): CmThizer {
     $this->template = $name.'.phtml';
     return $this;
   }
@@ -71,13 +93,18 @@ class CmThizer {
     return $this->template;
   }
   
-  public function setLandingPage($name): CmThizer {
+  public function setLandingPage(string $name): CmThizer {
     $this->landingPage = $name.'.phtml';
     return $this;
   }
   
   public function getLandingPage(): string {
     return $this->landingPage;
+  }
+  
+  public function setSitePath(string $foldername): CmThizer {
+    $this->sitePath = $foldername;
+    return $this;
   }
   
   public function getUri(): \CmThizer\Uri {
@@ -96,8 +123,7 @@ class CmThizer {
   
   private function resolveRoutes(): CmThizer {
     
-    $site = './site';
-    $dirItems = $this->scandirRecursive($site);
+    $dirItems = $this->scandirRecursive($this->sitePath);
     
     /**
      * Outra recursiva, agora para organizar os dados da pagina
@@ -155,7 +181,7 @@ class CmThizer {
    * 
    * ## RECURSIVA ##
    */
-  private function scandirRecursive($dirname): array {
+  private function scandirRecursive(string $dirname): array {
     $items = array();
     if (is_dir($dirname)) {
       foreach (scandir($dirname) as $item) {

@@ -16,7 +16,11 @@
     "phpmailer/phpmailer": "dev-master"
   },
   "autoload": {
-    "classmap": ["./core/CmThizer.php"]
+    "classmap": ["./core/CmThizer.php"],
+    "files": [
+      "./core/index.php",
+      "./core/functions.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
