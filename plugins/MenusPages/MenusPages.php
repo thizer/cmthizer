@@ -15,6 +15,12 @@ class MenusPages extends AbstractPlugin {
   public function preRoutes(): void {}
   public function posRoutes(): void {}
 
-  public function preRun(): void {}
+  public function preRun(): void {
+//     dump(array(
+//       get_class_methods($this->getCmThizer()->getUri()),
+//       $this->getCmThizer()->getUri()
+//     ));
+  }
+  
   public function posRun(): void {}
 }

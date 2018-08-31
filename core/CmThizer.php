@@ -1,15 +1,13 @@
 <?php
 include_once 'config.php';
 
-/**
- * 
- */
-
 use CmThizer\Plugins\AbstractPlugin;
 use CmThizer\Plugins\LoadPlugins;
 use CmThizer\Uri;
 
 class CmThizer {
+  
+  private $running = false;
   
   private $template = 'template.phtml';
   
@@ -31,7 +29,7 @@ class CmThizer {
   
   public function __construct() {
     try {
-      $this->plugins = new LoadPlugins($this->pluginsPath);
+      $this->plugins = new LoadPlugins($this->pluginsPath, $this);
       
       // Resolve configuracoes de URL, DocumentRoot e BasePath 
       $this->plugins->dispatch(AbstractPlugin::PRE_URI);
@@ -61,6 +59,11 @@ class CmThizer {
   
   public function run(): CmThizer {
     try {
+      // Avoid a second call to this method
+      if ($this->isRunning()) {
+        return $this;
+      }
+      $this->running = true;
       
       // Call user PRE_RUN plugins
       $this->plugins->dispatch(AbstractPlugin::PRE_RUN);
@@ -120,45 +123,6 @@ class CmThizer {
       dump($ex);
     }
     return $this;
-  }
-  
-  public function getUrl(string $link = ''): string {
-    return getenv('REQUEST_SCHEME').'://'.getenv('HTTP_HOST').$this->uri->getBasePath().'/'. trim($link, '/');
-  }
-  
-  public function getBaseUrl(string $link = ''): string {
-    return $this->getUrl($link);
-  }
-  
-  public function url(string $link = ''): string {
-    return $this->getUrl($link);
-  }
-  
-  public function setTemplate(string $name): CmThizer {
-    $this->template = $name.'.phtml';
-    return $this;
-  }
-  
-  public function getTemplate(): string {
-    return $this->template;
-  }
-  
-  public function setLandingPage(string $name): CmThizer {
-    $this->landingPage = $name.'.phtml';
-    return $this;
-  }
-  
-  public function getLandingPage(): string {
-    return $this->landingPage;
-  }
-  
-  public function setSitePath(string $foldername): CmThizer {
-    $this->sitePath = $foldername;
-    return $this;
-  }
-  
-  public function getUri(): Uri {
-    return $this->uri;
   }
   
   private function resolveParams(): CmThizer {
@@ -226,5 +190,101 @@ class CmThizer {
     return $this;
   }
   
+  /**
+   * User access methods (accessibles in plugins too)
+   * All the methods below (or most of then) was designed
+   * to be accessed in views or plugins files
+   */
+  
+  /**
+   * 
+   * @param string $link
+   * @return string
+   */
+  public function getUrl(string $link = ''): string {
+    return getenv('REQUEST_SCHEME').'://'.getenv('HTTP_HOST').$this->uri->getBasePath().'/'. trim($link, '/');
+  }
+  
+  public function getBaseUrl(string $link = ''): string {
+    return $this->getUrl($link);
+  }
+  
+  public function url(string $link = ''): string {
+    return $this->getUrl($link);
+  }
+  
+  public function setTemplate(string $name): CmThizer {
+    $this->template = $name.'.phtml';
+    return $this;
+  }
+  
+  public function getTemplate(): string {
+    return $this->template;
+  }
+  
+  public function setLandingPage(string $name): CmThizer {
+    $this->landingPage = $name.'.phtml';
+    return $this;
+  }
+  
+  public function getLandingPage(): string {
+    return $this->landingPage;
+  }
+  
+  public function setSitePath(string $foldername): CmThizer {
+    $this->sitePath = $foldername;
+    return $this;
+  }
+  
+  public function getSitePath(): string {
+    return $this->sitePath;
+  }
+  
+  public function getUri(): Uri {
+    return $this->uri;
+  }
+  
+  public function setPluginsPath(string $foldername): CmThizer {
+    $this->pluginsPath = $foldername;
+  }
+  
+  public function getPluginsPath(): string {
+    return $this->pluginsPath;
+  }
+  
+  public function getParams(): array {
+    return $this->params;
+  }
+  
+  public function getParam(string $name, $default = false) {
+    $result = $default;
+    if (isset($this->params[$name])) {
+      $result = $this->params[$name];
+    }
+    return $result;
+  }
+  
+  public function isPost(): bool {
+    return (getenv('REQUEST_METHOD') == 'POST');
+  }
+  
+  public function getPost(string $name = null, $default = false) {
+    $result = $this->post;
+    if ($name) {
+      $result = $default;
+      if (isset($this->post[$name])) {
+        $result = $this->post[$name];
+      }
+    }
+    return $result;
+  }
+  
+  public function getRoutes() {
+    return $this->routes;
+  }
+  
+  public function isRunning(): bool {
+    return $this->running;
+  }
 }
 

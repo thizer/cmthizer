@@ -15,6 +15,16 @@ abstract class AbstractPlugin
   const PRE_RUN = 8;
   const POS_RUN = 9;
   
+  private $instance;
+  
+  public function setCmThizerInstance(\CmThizer $instance): void {
+    $this->instance = $instance;
+  }
+  
+  protected function getCmThizer(): \CmThizer {
+    return $this->instance;
+  }
+  
   abstract function preUri(): void;
 
   abstract function posUri(): void;

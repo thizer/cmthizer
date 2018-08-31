@@ -3,11 +3,14 @@ namespace CmThizer\Plugins;
 
 use function Composer\Autoload\includeFile;
 
-class LoadPlugins implements \Iterator
+class LoadPlugins
 {
+  private $cmThizerInstance;
   private $plugins = array();
   
-  public function __construct(string $pluginsPath) {
+  public function __construct(string $pluginsPath, \CmThizer $cmThizerInstance) {
+    
+    $this->cmThizerInstance = $cmThizerInstance;
     
     $pluginsDir = scandir_recursive($pluginsPath, true);
     
@@ -40,60 +43,45 @@ class LoadPlugins implements \Iterator
   }
   
   public function dispatch(int $type): void {
-    switch ($type) {
-      case AbstractPlugin::PRE_URI:
-        
-        break;
-      case AbstractPlugin::POS_URI:
-        
-        break;
-      case AbstractPlugin::PRE_PARAMS:
-        
-        break;
-      case AbstractPlugin::POS_PARAMS:
-        
-        break;
-      case AbstractPlugin::PRE_POST:
-        
-        break;
-      case AbstractPlugin::POS_POST:
-        
-        break;
-      case AbstractPlugin::PRE_ROUTES:
-        
-        break;
-      case AbstractPlugin::POS_ROUTES:
-        
-        break;
-      case AbstractPlugin::PRE_RUN:
-        
-        break;
-      case AbstractPlugin::POS_RUN:
-        
-        break;
-      default:
-        throw new \ErrorException("Unknown plugin dispatch type ($type)");
-    }
+    foreach($this->plugins as $plugin) {
+      
+      $plugin->setCmThizerInstance($this->cmThizerInstance);
+      
+      switch ($type) {
+        case AbstractPlugin::PRE_URI:
+          $plugin->preUri();
+          break;
+        case AbstractPlugin::POS_URI:
+          $plugin->posUri();
+          break;
+        case AbstractPlugin::PRE_PARAMS:
+          $plugin->preParams();
+          break;
+        case AbstractPlugin::POS_PARAMS:
+          $plugin->posParams();
+          break;
+        case AbstractPlugin::PRE_POST:
+          $plugin->prePost();
+          break;
+        case AbstractPlugin::POS_POST:
+          $plugin->posPost();
+          break;
+        case AbstractPlugin::PRE_ROUTES:
+          $plugin->preRoutes();
+          break;
+        case AbstractPlugin::POS_ROUTES:
+          $plugin->posRoutes();
+          break;
+        case AbstractPlugin::PRE_RUN:
+          $plugin->preRun();
+          break;
+        case AbstractPlugin::POS_RUN:
+          $plugin->posRun();
+          break;
+        default:
+          throw new \ErrorException("Unknown plugin dispatch type ($type)");
+      }
+      
+    } // Endforeach 
   }
-
-  public function current() {
-    
-  }
-
-  public function key(): \scalar {
-    
-  }
-
-  public function next(): void {
-    
-  }
-
-  public function rewind(): void {
-    
-  }
-
-  public function valid(): bool {
-    
-  }
-
 }
