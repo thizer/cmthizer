@@ -15,23 +15,23 @@ abstract class AbstractPlugin
   const PRE_RUN = 8;
   const POS_RUN = 9;
   
-  abstract function preUri();
+  abstract function preUri(): void;
 
-  abstract function posUri();
+  abstract function posUri(): void;
 
-  abstract function preParams();
+  abstract function preParams(): void;
 
-  abstract function posParams();
+  abstract function posParams(): void;
 
-  abstract function prePost();
+  abstract function prePost(): void;
 
-  abstract function posPost();
+  abstract function posPost(): void;
 
-  abstract function preRoutes();
+  abstract function preRoutes(): void;
 
-  abstract function posRoutes();
+  abstract function posRoutes(): void;
   
-  abstract function preRun();
+  abstract function preRun(): void;
   
-  abstract function posRun();
+  abstract function posRun(): void;
 }

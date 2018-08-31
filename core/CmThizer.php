@@ -1,4 +1,5 @@
 <?php
+include_once 'functions.php';
 
 use CmThizer\Plugins\AbstractPlugin;
 use CmThizer\Plugins\LoadPlugins;
@@ -28,14 +29,24 @@ class CmThizer {
     try {
       $this->plugins = new LoadPlugins($this->pluginsPath);
       
+      // Resolve configuracoes de URL, DocumentRoot e BasePath 
       $this->plugins->dispatch(AbstractPlugin::PRE_URI);
       $this->uri = new Uri();
       $this->plugins->dispatch(AbstractPlugin::POS_URI);
       
-      // Resolver configuracoes
+      // Resolve configuracoes de parametros de URL (GET)
+      $this->plugins->dispatch(AbstractPlugin::PRE_PARAMS);
       $this->resolveParams();
+      $this->plugins->dispatch(AbstractPlugin::POS_PARAMS);
+      
+      // Resolve configuracoes de argumentos POST
+      $this->plugins->dispatch(AbstractPlugin::PRE_POST);
       $this->resolvePost();
+      $this->plugins->dispatch(AbstractPlugin::POS_POST);
+      
+      $this->plugins->dispatch(AbstractPlugin::PRE_ROUTES);
       $this->resolveRoutes();
+      $this->plugins->dispatch(AbstractPlugin::POS_ROUTES);
       
     } catch (Exception $ex) {
       dump($ex);
@@ -46,18 +57,32 @@ class CmThizer {
   
   public function run(): CmThizer {
     try {
+      
+      // Call user PRE_RUN plugins
+      $this->plugins->dispatch(AbstractPlugin::PRE_RUN);
+      
       // Check if route exists
       if (!isset($this->routes[$this->uri->getRoute()])) {
         throw new Exception("404 - Page not found", 404);
       }
       
+      /**
+       * Valores padrao para algumas variaveis que serao
+       * visiveis nas views
+       */
+      
+      $template = $this->template;
+      $basePath = '';
+      
       // Variables to be appended to the view
       $route = $this->routes[$this->uri->getRoute()];
-      $configs = $route['configs'];
+      if (isset($route['configs'])) {
+        foreach ($route['configs'] as $varName => $varValue) {
+          $$varName = $varValue;
+        }
+      }
       
       // Caminho base
-      // (essa concatenacao sem sentido existe apenas para desmarcar var nao utilizada)
-      $basePath = '';
       $basePath .= $this->uri->getBasePath();
       
       // Load content
@@ -76,7 +101,16 @@ class CmThizer {
       
       // Including here, all these variables defined above
       // are accessible on the view
-      include $this->sitePath.$configs['template'];
+      include $this->sitePath.$template;
+      
+      // Com isso o editor nao marca essas
+      // variaveis como nao utilizadas. Ou seja,
+      // isso aqui nao serve para nada.
+      unset($basePath);
+      unset($content);
+      
+      // Call user POS_RUN plugins
+      $this->plugins->dispatch(AbstractPlugin::POS_RUN);
       
     } catch (Exception $ex) {
       dump($ex);
@@ -135,7 +169,7 @@ class CmThizer {
   
   private function resolveRoutes(): CmThizer {
     
-    $dirItems = $this->scandirRecursive($this->sitePath);
+    $dirItems = scandir_recursive($this->sitePath);
     
     /**
      * Outra recursiva, agora para organizar os dados da pagina
@@ -188,25 +222,5 @@ class CmThizer {
     return $this;
   }
   
-  /**
-   * Nos da a lista de conteudo da pasta site
-   * 
-   * ## RECURSIVA ##
-   */
-  private function scandirRecursive(string $dirname): array {
-    $items = array();
-    if (is_dir($dirname)) {
-      foreach (scandir($dirname) as $item) {
-        if (!in_array($item, array('.', '..'))) {
-          if (is_dir($dirname.DIRECTORY_SEPARATOR.$item)) {
-            $items[$dirname.DIRECTORY_SEPARATOR.$item] = $this->scandirRecursive($dirname.DIRECTORY_SEPARATOR.$item);
-          } else {
-            $items[] = $item;
-          }
-        }
-      }
-    }
-    return $items;
-  }
 }
 
