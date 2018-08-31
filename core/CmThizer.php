@@ -1,5 +1,9 @@
 <?php
-include_once 'functions.php';
+include_once 'config.php';
+
+/**
+ * 
+ */
 
 use CmThizer\Plugins\AbstractPlugin;
 use CmThizer\Plugins\LoadPlugins;

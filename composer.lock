@@ -124,12 +124,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/verot/class.upload.php.git",
-                "reference": "c659b975a28dec30046bd23be3f9abc720a8a83e"
+                "reference": "7c7ff6764b7f9cc5c9fe695b886807f6c360892e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/verot/class.upload.php/zipball/c659b975a28dec30046bd23be3f9abc720a8a83e",
-                "reference": "c659b975a28dec30046bd23be3f9abc720a8a83e",
+                "url": "https://api.github.com/repos/verot/class.upload.php/zipball/7c7ff6764b7f9cc5c9fe695b886807f6c360892e",
+                "reference": "7c7ff6764b7f9cc5c9fe695b886807f6c360892e",
                 "shasum": ""
             },
             "require": {
@@ -157,7 +157,7 @@
                 "gd",
                 "upload"
             ],
-            "time": "2018-05-31T11:32:33+00:00"
+            "time": "2018-08-30T13:17:39+00:00"
         }
     ],
     "packages-dev": [],

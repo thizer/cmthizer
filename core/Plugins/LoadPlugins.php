@@ -12,19 +12,19 @@ class LoadPlugins implements \Iterator
     $pluginsDir = scandir_recursive($pluginsPath, true);
     
     foreach ($pluginsDir as $value) {
-      if (is_file($value) && is_readable($value) && (pathinfo($value, PATHINFO_EXTENSION) == 'php')) {
-        
-        $this->append($value);
-        
-      } elseif (is_array($value)) {
-        foreach ($pluginsDir as $value) {
-          if (is_file($value) && is_readable($value) && (pathinfo($value, PATHINFO_EXTENSION) == 'php')) {
+      if (is_array($value)) {
+        foreach ($value as $subValue) {
+          if (is_file($subValue) && is_readable($subValue) && (pathinfo($subValue, PATHINFO_EXTENSION) == 'php')) {
             
-            $this->append($value);
+            $this->append($subValue);
           }
         }
+      } else if (is_file($value) && is_readable($value) && (pathinfo($value, PATHINFO_EXTENSION) == 'php')) {
+        
+        $this->append($value);
       }
-    }
+      
+    } // Endforeach
   }
   
   private function append($filename): LoadPlugins {
