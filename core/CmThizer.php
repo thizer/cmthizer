@@ -1,4 +1,9 @@
 <?php
+
+use CmThizer\Plugins\AbstractPlugin;
+use CmThizer\Plugins\LoadPlugins;
+use CmThizer\Uri;
+
 class CmThizer {
   
   private $template = 'template.phtml';
@@ -6,6 +11,10 @@ class CmThizer {
   private $landingPage = 'landing-page.phtml';
   
   private $sitePath = './site/';
+  
+  private $pluginsPath = './plugins/';
+  
+  private $plugins;
   
   private $uri;
   
@@ -17,8 +26,11 @@ class CmThizer {
   
   public function __construct() {
     try {
+      $this->plugins = new LoadPlugins($this->pluginsPath);
       
-      $this->uri = new \CmThizer\Uri();
+      $this->plugins->dispatch(AbstractPlugin::PRE_URI);
+      $this->uri = new Uri();
+      $this->plugins->dispatch(AbstractPlugin::POS_URI);
       
       // Resolver configuracoes
       $this->resolveParams();
@@ -107,7 +119,7 @@ class CmThizer {
     return $this;
   }
   
-  public function getUri(): \CmThizer\Uri {
+  public function getUri(): Uri {
     return $this->uri;
   }
   
