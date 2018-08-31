@@ -6,7 +6,6 @@ do sistema em todas as etapas de configuração. Basta configurá-lo corretament
  1. Criar uma pasta com o nome do seu plugin
  1. Criar a classe do seu plugin e extender a classe `CmThizer\Plugins\AbstractPlugin`
  1. Utilizar um dos métodos abstratos a medida de sua necessidade
-   - `init()`
    - `preUri()`
    - `posUri()`
    - `preParams()`
@@ -15,4 +14,6 @@ do sistema em todas as etapas de configuração. Basta configurá-lo corretament
    - `posPost()`
    - `preRoutes()`
    - `posRoutes()`
+   - `preRun()`
+   - `posRun()`
 

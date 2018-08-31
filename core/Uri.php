@@ -41,7 +41,7 @@ class Uri {
     return $this->basePath;
   }
   
-  public function getRoute(): string {
+  public function getRouteName(): string {
     return $this->route;
   }
 }

@@ -69,7 +69,7 @@ class CmThizer {
       $this->plugins->dispatch(AbstractPlugin::PRE_RUN);
       
       // Check if route exists
-      if (!isset($this->routes[$this->uri->getRoute()])) {
+      if (!isset($this->routes[$this->uri->getRouteName()])) {
         throw new Exception("404 - Page not found", 404);
       }
       
@@ -82,7 +82,7 @@ class CmThizer {
       $basePath = '';
       
       // Variables to be appended to the view
-      $route = $this->routes[$this->uri->getRoute()];
+      $route = $this->routes[$this->uri->getRouteName()];
       if (isset($route['configs'])) {
         foreach ($route['configs'] as $varName => $varValue) {
           $$varName = $varValue;

@@ -15,13 +15,15 @@
 		"email" : "thizerdev@gmail.com"
 	},
 	"require" : {
-		"php" : ">=7.0",
+		"php" : ">=7.1",
 		"erusev/parsedown" : "dev-master",
 		"verot/class.upload.php" : "dev-master",
 		"phpmailer/phpmailer" : "dev-master"
 	},
 	"autoload" : {
-		"classmap" : ["./core/CmThizer.php"]
+		"classmap" : [
+			"./core/CmThizer.php"
+		]
 	},
 	"autoload-dev" : {
 		"psr-4" : {
