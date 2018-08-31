@@ -1,3 +1,7 @@
-vendor
+vendor/
+!assets/dist/vendor
 docs
 nbproject/
+.settings
+.project
+.buildpath
