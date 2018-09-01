@@ -114,6 +114,7 @@ class CmThizer {
       // variaveis como nao utilizadas. Ou seja,
       // isso aqui nao serve para nada.
       unset($basePath);
+      unset($baseUrl);
       unset($content);
       
       // Call user POS_RUN plugins

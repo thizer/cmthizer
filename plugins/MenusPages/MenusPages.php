@@ -29,13 +29,19 @@ class MenusPages extends AbstractPlugin {
     $pages = array();
     $menus = array();
     foreach ($siteItems as $path => $content) {
+      
       // Elimina arquivos soltos na pasta
       if (is_array($content)) {
-        foreach (array_keys($content) as $subPath) {
-          if (is_dir($subPath)) {
+        foreach ($content as $menuPath => $menContent) {
+          if (is_dir($menuPath)) {
+            
+            // The menu name is the name of the parent folder
+            $menuName = preg_replace("/^.+\//", '', $path);
+            
+            $config = $this->getConfig($menuPath.'/config.json');
             
             // Se eh uma pasta significa que temos uma subpagina
-            $menus[$path] = $content;
+            $menus[$menuName][$baseUrl.$config->uri] = $config->title;
             
           } else if (file_exists($path.'/config.json') && is_readable($path.'/config.json')) {
             
@@ -58,6 +64,19 @@ class MenusPages extends AbstractPlugin {
   
   public function posRun(): void {} // 10
   
+  private function getConfig(string $file): stdClass {
+    $result = new stdClass();
+    if (file_exists($file) && is_readable($file)) {
+      $result = json_decode(file_get_contents($file));
+    } else {
+      throw new Exception("The file '$file' was not found or is not readable");
+    }
+    
+    $result->uri = $result->uri ?? '/not-found';
+    $result->title = $result->title ?? 'My Website';
+    
+    return $result;
+  }
 }
 
 
