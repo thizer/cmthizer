@@ -1,6 +1,9 @@
 .container {
   max-width: 960px;
 }
+.content-container {
+	min-height: 60vh;
+}
 
 /*
  * Custom translucent site header
