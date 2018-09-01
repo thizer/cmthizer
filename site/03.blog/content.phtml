@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-9">
+  
+    <h1>Acompanhe nosso trabalho</h1>
+    <p>Conteúdo segue abaixo</p>
+    <?php echo $content; ?>
+    
+  </div>
+  <div class="col-3" style="border-left: 1px solid rgba(0, 0, 0, 0.125); min-height: 400px;">
+    
+    <h5>Posts</h5>
+    <div class="list-group list-group-flush">
+      <?php foreach ($menus['03.blog'] as $url => $title): ?>
+        <a class="list-group-item" href="<?php echo $url; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a>
+      <?php endforeach; ?>
+    </div>
+    
+  </div>
+</div>

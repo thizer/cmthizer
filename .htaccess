@@ -1,3 +1,5 @@
+Options -Indexes
+
 RewriteEngine on
 
 # The following rule tells Apache that if the requested filename

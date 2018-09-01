@@ -42,7 +42,7 @@ class MenusPages extends AbstractPlugin {
             $config = $this->getConfig($menuPath.'/config.json');
             
             // Se eh uma pasta significa que temos uma subpagina
-            $url = preg_replace("/\/{2,}/", '', $baseUrl.$config->uri);
+            $url = $baseUrl.ltrim(preg_replace("/\/{2,}/", '/', $config->uri), "/");
             $menus[$menuName][$url] = $config->title;
             
           } else if (file_exists($path.'/config.json') && is_readable($path.'/config.json')) {
