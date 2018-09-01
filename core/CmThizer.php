@@ -292,6 +292,14 @@ class CmThizer {
     return $this->uri;
   }
   
+  public function getPlugins(): array {
+    return $this->plugins->getAll();
+  }
+  
+  public function getPlugin(string $name): AbstractPlugin {
+    return $this->plugins->get($name);
+  }
+  
   public function setPluginsPath(string $foldername): CmThizer {
     $this->pluginsPath = $foldername;
   }

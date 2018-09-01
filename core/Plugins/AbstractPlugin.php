@@ -17,12 +17,23 @@ abstract class AbstractPlugin
   
   private $instance;
   
+  private $active = true;
+  
   public function setCmThizerInstance(\CmThizer $instance): void {
     $this->instance = $instance;
   }
   
   protected function getCmThizer(): \CmThizer {
     return $this->instance;
+  }
+  
+  public function setActive(bool $status): self {
+    $this->active = $status;
+    return $this;
+  }
+  
+  public function isActive(): bool {
+    return $this->active;
   }
   
   abstract function preUri(): void;

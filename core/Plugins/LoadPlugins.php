@@ -37,13 +37,17 @@ class LoadPlugins
     
     $classInstance = new $className();
     if ($classInstance instanceof AbstractPlugin) {
-      $this->plugins[] = $classInstance;
+      $this->plugins[$className] = $classInstance;
     }
     return $this;
   }
   
   public function dispatch(int $type): void {
     foreach($this->plugins as $plugin) {
+      
+      if (!$plugin->isActive()) {
+        continue;
+      }
       
       $plugin->setCmThizerInstance($this->cmThizerInstance);
       
@@ -83,5 +87,13 @@ class LoadPlugins
       }
       
     } // Endforeach 
+  }
+  
+  public function getAll(): array {
+    return $this->plugins;
+  }
+  
+  public function get(string $name): AbstractPlugin {
+    return $this->plugins[$name] ?? null;
   }
 }
