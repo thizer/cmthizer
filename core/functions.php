@@ -53,3 +53,21 @@ function scandir_recursive(string $dirname, bool $fullfilename = false): array {
   }
   return $items;
 }
+
+function in_array_any(array $needle, array $target): bool {
+  // Remove arrays from needle
+  foreach ($needle as $k => $v) {
+    if (is_array($v)) {
+      unset($needle[$k]);
+    }
+  }
+  
+  // Remove arrays from target
+  foreach ($target as $k => $v) {
+    if (is_array($v)) {
+      unset($target[$k]);
+    }
+  }
+  
+  return !empty(array_intersect($needle, $target));
+}

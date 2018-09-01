@@ -1,9 +1,9 @@
 <?php
 include_once 'config.php';
 
+use CmThizer\Uri;
 use CmThizer\Plugins\AbstractPlugin;
 use CmThizer\Plugins\LoadPlugins;
-use CmThizer\Uri;
 
 class CmThizer {
   
@@ -96,13 +96,22 @@ class CmThizer {
       $content = "";
       if ($route['content'] && file_exists($route['content'])) {
         
-        // Allowed to read file?
-        if (is_readable($route['content'])) {
-          $parseDown = new ParsedownExtra();
-          $content = $parseDown->parse(file_get_contents($route['content']));
+        if (!is_readable($route['content'])) {
+          throw new Exception("Content file ({$route['content']}) does not exists or is not readable");
+        }
+        
+        $fileExt = pathinfo($route['content'], PATHINFO_EXTENSION);
+        
+        if (in_array($fileExt, array('phtml', 'php', 'html'))) {
+          
+          ob_start();
+          include $route['content'];
+          $content = ob_get_clean();
           
         } else {
-          throw new Exception("Markdown content file ({$route['content']}) is not readable");
+          // Allowed to read file?
+          $parseDown = new ParsedownExtra();
+          $content = $parseDown->parse(file_get_contents($route['content']));
         }
       }
       
@@ -153,9 +162,19 @@ class CmThizer {
         'uri' => '/',
         'template' => 'template.phtml'
       );
-      
+      $config = array();
       foreach ($items as $folder => $content) {
-        if (is_dir($folder) && in_array('config.json', $content) && in_array('content.md', $content)) {
+        
+        $fileTypes = array(
+          'config.json',
+          'content.php',
+          'content.phtml',
+          'content.html',
+          'content.md'
+        );
+        
+        // It's a folder and the qtd of valid files found is => than 2 
+        if (is_dir($folder) && is_array($content) && in_array_any($fileTypes, $content)) {
           
           // Get configs from config.json file
           $config['configs'] = array_merge(
@@ -163,12 +182,27 @@ class CmThizer {
             json_decode(file_get_contents($folder.'/config.json'), true)
           );
           
-          $config['content'] = $folder.'/content.md';
+          $contentFile = false;
+          foreach (scandir($folder) as $file) {
+            if (pathinfo($file, PATHINFO_FILENAME) == 'content') {
+              $contentFile = $folder.'/'.$file;
+            }
+          }
+          
+          $config['content'] = $contentFile;
           
           $uri = '/'.ltrim($config['configs']['uri'], '/');
-          
           $routes[$uri] = $config;
-        } else if(is_array($content)) {
+          
+          // If there's folders here
+          // its because theres sub pages
+          foreach(array_keys($content) as $subFolder) {
+            if (is_dir($subFolder)) {
+              $routes += resolve($content);
+            }
+          }
+          
+        } else if(is_dir($folder)) {
           $routes += resolve($content);
         }
       }
