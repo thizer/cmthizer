@@ -79,7 +79,6 @@ class CmThizer {
        */
       
       $template = $this->template;
-      $basePath = '';
       
       // Variables to be appended to the view
       $route = $this->routes[$this->uri->getRouteName()];
@@ -90,7 +89,8 @@ class CmThizer {
       }
       
       // Caminho base
-      $basePath .= $this->uri->getBasePath();
+      $basePath = $this->uri->getBasePath();
+      $baseUrl = $this->getBaseUrl();
       
       // Load content
       $content = "";
@@ -213,6 +213,15 @@ class CmThizer {
     return $this->getUrl($link);
   }
   
+  /**
+   * Alias to $this->uri->getBasePath()
+   * 
+   * @return string
+   */
+  public function getBasePath(): string {
+    return $this->uri->getBasePath();
+  }
+  
   public function setTemplate(string $name): CmThizer {
     $this->template = $name.'.phtml';
     return $this;
@@ -279,8 +288,17 @@ class CmThizer {
     return $result;
   }
   
-  public function getRoutes() {
+  public function getRoutes(): array {
     return $this->routes;
+  }
+  
+  public function getCurrentRoute(): array {
+    return $this->routes[$this->getUri()->getRouteName()];
+  }
+  
+  public function addViewVar(string $name, $value): CmThizer {
+    $this->routes[$this->getUri()->getRouteName()]['configs'][$name] = $value;
+    return $this;
   }
   
   public function isRunning(): bool {

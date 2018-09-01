@@ -21,31 +21,39 @@ class MenusPages extends AbstractPlugin {
   public function posRoutes(): void {} // 8
 
   public function preRun(): void {
-    
-    $routeName = $this->getCmThizer()->getUri()->getRouteName();
-    
     $sitePath = $this->getCmThizer()->getSitePath();
     $siteItems = scandir_recursive($sitePath);
+    $baseUrl = $this->getCmThizer()->getBaseUrl();
     
+    // Organize site pages (and menus)
     $pages = array();
-    $posts = array();
-    
+    $menus = array();
     foreach ($siteItems as $path => $content) {
+      // Elimina arquivos soltos na pasta
       if (is_array($content)) {
         foreach (array_keys($content) as $subPath) {
-          
           if (is_dir($subPath)) {
-            $posts[$path] = $content;
-          } else {
-            $pages[$path] = $content;
+            
+            // Se eh uma pasta significa que temos uma subpagina
+            $menus[$path] = $content;
+            
+          } else if (file_exists($path.'/config.json') && is_readable($path.'/config.json')) {
+            
+            // Assoc file to the pages list
+            $params = json_decode(file_get_contents($path.'/config.json'));
+            $pages[$baseUrl.$params->uri] = $params->title;
           }
-          
         }
       }
     }
-    // echo dump($pages, false);
-    // echo dump($posts, false);
-    // exit;
+    
+    $this->getCmThizer()->addViewVar('pages', $pages);
+    $this->getCmThizer()->addViewVar('menus', $menus);
+    
+//    $route = $this->getCmThizer()->getCurrentRoute();
+//    
+//    echo dump($this->getCmThizer()->getRoutes(), false);
+//    exit;
   }
   
   public function posRun(): void {} // 10
