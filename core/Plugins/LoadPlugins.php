@@ -82,6 +82,9 @@ class LoadPlugins
         case AbstractPlugin::POS_RUN:
           $plugin->posRun();
           break;
+        case AbstractPlugin::BEFORE_RENDER:
+          $plugin->beforeRender();
+          break;
         default:
           throw new \ErrorException("Unknown plugin dispatch type ($type)");
       }

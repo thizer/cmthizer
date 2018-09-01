@@ -14,6 +14,7 @@ abstract class AbstractPlugin
   const POS_ROUTES = 7;
   const PRE_RUN = 8;
   const POS_RUN = 9;
+  const BEFORE_RENDER = 10;
   
   private $instance;
   
@@ -55,4 +56,6 @@ abstract class AbstractPlugin
   abstract function preRun(): void;
   
   abstract function posRun(): void;
+  
+  abstract function beforeRender(): void;
 }

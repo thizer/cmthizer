@@ -18,4 +18,5 @@ class Sitemap extends AbstractPlugin {
   public function preRun(): void {}
   public function posRun(): void {}
 
+  public function beforeRender():void {}
 }

@@ -31,7 +31,7 @@ class MenusPages extends AbstractPlugin {
     $menus = array();
     foreach ($siteItems as $path => $content) {
       
-      // Elimina arquivos soltos na pasta
+      // Ignora arquivos soltos na pasta
       if (is_array($content)) {
         foreach (array_keys($content) as $menuPath) {
           if (is_dir($menuPath)) {
@@ -58,13 +58,17 @@ class MenusPages extends AbstractPlugin {
     $this->getCmThizer()->addViewVar('pages', $pages);
     $this->getCmThizer()->addViewVar('menus', $menus);
     
-//    $route = $this->getCmThizer()->getCurrentRoute();
-//    
-//    echo dump($this->getCmThizer()->getRoutes(), false);
-//    exit;
+    // If theres a sub layout we will render it before
+    // the main layout
+    $route = $this->getCmThizer()->getCurrentRoute();
+    if (file_exists($route['dirname'].'/layout.phtml')) {
+      $this->renderSubLayout($route);
+    }
   }
   
   public function posRun(): void {} // 10
+  
+  public function beforeRender():void {}
   
   private function getConfig(string $file): stdClass {
     $result = new stdClass();
@@ -78,6 +82,34 @@ class MenusPages extends AbstractPlugin {
     $result->title = $result->title ?? 'My Website';
     
     return $result;
+  }
+  
+  private function renderSubLayout(array $route): void {
+    
+    $template = $this->getCmThizer()->getTemplate();
+      
+    // Variables to be appended to the view
+    if (isset($route)) {
+      foreach ($route as $varName => $varValue) {
+        $$varName = $varValue;
+      }
+    }
+
+    // Caminho base
+    $basePath = $this->getCmThizer()->getBasePath();
+    $baseUrl = $this->getCmThizer()->getBaseUrl();
+    
+    $content = '';
+    if (file_exists($route['dirname'].'/content.md')) {
+      $parseDown = new ParsedownExtra();
+      $content = $parseDown->parse(file_get_contents($route['content']));
+    }
+    
+    ob_start();
+    include $route['dirname'].'/layout.phtml';
+    $content = ob_get_clean();
+    
+    $this->getCmThizer()->addViewVar('content', $content);
   }
 }
 

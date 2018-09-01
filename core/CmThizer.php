@@ -82,8 +82,8 @@ class CmThizer {
       
       // Variables to be appended to the view
       $route = $this->routes[$this->uri->getRouteName()];
-      if (isset($route['configs'])) {
-        foreach ($route['configs'] as $varName => $varValue) {
+      if (isset($route)) {
+        foreach ($route as $varName => $varValue) {
           $$varName = $varValue;
         }
       }
@@ -93,7 +93,7 @@ class CmThizer {
       $baseUrl = $this->getBaseUrl();
       
       // Load content
-      $content = "";
+      $content = $route['content'];
       if ($route['content'] && file_exists($route['content'])) {
         
         if (!is_readable($route['content'])) {
@@ -114,6 +114,9 @@ class CmThizer {
           $content = $parseDown->parse(file_get_contents($route['content']));
         }
       }
+      
+      // Call user BEFORE_RENDER plugins
+      $this->plugins->dispatch(AbstractPlugin::BEFORE_RENDER);
       
       // Including here, all these variables defined above
       // are accessible on the view
@@ -162,12 +165,11 @@ class CmThizer {
     // If was not created a home landing page, we do it
     if (!isset($this->routes['/'])) {
       $this->routes['/'] = array(
-          'configs' => array(
-            'title' => 'My website',
-            'uri' => '/',
-            'template' => $this->landingPage
-          ),
-          'content' => ''
+        'title' => 'My website',
+        'uri' => '/',
+        'template' => $this->landingPage,
+        'content' => '',
+        'dirname' => $this->getSitePath()
       );
     }
     
@@ -197,7 +199,7 @@ class CmThizer {
       if (is_dir($folder) && is_array($content) && in_array_any($fileTypes, $content)) {
         
         // Get configs from config.json file
-        $config['configs'] = array_merge(
+        $config = array_merge(
           $defaultValues,
           json_decode(file_get_contents($folder.'/config.json'), true)
           );
@@ -209,9 +211,10 @@ class CmThizer {
           }
         }
         
+        $config['dirname'] = $folder;
         $config['content'] = $contentFile;
         
-        $uri = '/'.ltrim($config['configs']['uri'], '/');
+        $uri = '/'.ltrim($config['uri'], '/');
         $routes[$uri] = $config;
         
         // If there's folders here
@@ -344,7 +347,7 @@ class CmThizer {
   }
   
   public function addViewVar(string $name, $value): CmThizer {
-    $this->routes[$this->getUri()->getRouteName()]['configs'][$name] = $value;
+    $this->routes[$this->getUri()->getRouteName()][$name] = $value;
     return $this;
   }
   
