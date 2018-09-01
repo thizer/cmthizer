@@ -21,6 +21,7 @@ class MenusPages extends AbstractPlugin {
   public function posRoutes(): void {} // 8
 
   public function preRun(): void {
+    
     $sitePath = $this->getCmThizer()->getSitePath();
     $siteItems = scandir_recursive($sitePath);
     $baseUrl = $this->getCmThizer()->getBaseUrl();
@@ -32,7 +33,7 @@ class MenusPages extends AbstractPlugin {
       
       // Elimina arquivos soltos na pasta
       if (is_array($content)) {
-        foreach ($content as $menuPath => $menContent) {
+        foreach (array_keys($content) as $menuPath) {
           if (is_dir($menuPath)) {
             
             // The menu name is the name of the parent folder
@@ -41,7 +42,8 @@ class MenusPages extends AbstractPlugin {
             $config = $this->getConfig($menuPath.'/config.json');
             
             // Se eh uma pasta significa que temos uma subpagina
-            $menus[$menuName][$baseUrl.$config->uri] = $config->title;
+            $url = preg_replace("/\/{2,}/", '', $baseUrl.$config->uri);
+            $menus[$menuName][$url] = $config->title;
             
           } else if (file_exists($path.'/config.json') && is_readable($path.'/config.json')) {
             

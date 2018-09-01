@@ -9,7 +9,7 @@ class CmThizer {
   
   private $running = false;
   
-  private $template = 'template.phtml';
+  private $template = 'layout.phtml';
   
   private $landingPage = 'landing-page.phtml';
   
@@ -117,7 +117,9 @@ class CmThizer {
       
       // Including here, all these variables defined above
       // are accessible on the view
-      include $this->sitePath.$template;
+      if ($template) {
+        include $this->sitePath.$template;
+      }
       
       // Com isso o editor nao marca essas
       // variaveis como nao utilizadas. Ou seja,
@@ -154,61 +156,8 @@ class CmThizer {
      * 
      * ## RECURSIVA ##
      */
-    function resolve(array $items): array {
-      $routes = array();
-      
-      $defaultValues = array(
-        'title' => 'My website',
-        'uri' => '/',
-        'template' => 'template.phtml'
-      );
-      $config = array();
-      foreach ($items as $folder => $content) {
-        
-        $fileTypes = array(
-          'config.json',
-          'content.php',
-          'content.phtml',
-          'content.html',
-          'content.md'
-        );
-        
-        // It's a folder and the qtd of valid files found is => than 2 
-        if (is_dir($folder) && is_array($content) && in_array_any($fileTypes, $content)) {
-          
-          // Get configs from config.json file
-          $config['configs'] = array_merge(
-            $defaultValues,
-            json_decode(file_get_contents($folder.'/config.json'), true)
-          );
-          
-          $contentFile = false;
-          foreach (scandir($folder) as $file) {
-            if (pathinfo($file, PATHINFO_FILENAME) == 'content') {
-              $contentFile = $folder.'/'.$file;
-            }
-          }
-          
-          $config['content'] = $contentFile;
-          
-          $uri = '/'.ltrim($config['configs']['uri'], '/');
-          $routes[$uri] = $config;
-          
-          // If there's folders here
-          // its because theres sub pages
-          foreach(array_keys($content) as $subFolder) {
-            if (is_dir($subFolder)) {
-              $routes += resolve($content);
-            }
-          }
-          
-        } else if(is_dir($folder)) {
-          $routes += resolve($content);
-        }
-      }
-      return $routes;
-    }
-    $this->routes = resolve($dirItems);
+    
+    $this->routes = $this->resolve($dirItems);
     
     // If was not created a home landing page, we do it
     if (!isset($this->routes['/'])) {
@@ -216,13 +165,68 @@ class CmThizer {
           'configs' => array(
             'title' => 'My website',
             'uri' => '/',
-            'template' => 'landing-page.phtml'
+            'template' => $this->landingPage
           ),
           'content' => ''
       );
     }
     
     return $this;
+  }
+  
+  private function resolve(array $items): array {
+    $routes = array();
+    
+    $defaultValues = array(
+      'title' => 'My website',
+      'uri' => '/',
+      'template' => $this->template
+    );
+    $config = array();
+    foreach ($items as $folder => $content) {
+      
+      $fileTypes = array(
+        'config.json',
+        'content.php',
+        'content.phtml',
+        'content.html',
+        'content.md'
+      );
+      
+      // It's a folder and the qtd of valid files found is => than 2
+      if (is_dir($folder) && is_array($content) && in_array_any($fileTypes, $content)) {
+        
+        // Get configs from config.json file
+        $config['configs'] = array_merge(
+          $defaultValues,
+          json_decode(file_get_contents($folder.'/config.json'), true)
+          );
+        
+        $contentFile = false;
+        foreach (scandir($folder) as $file) {
+          if (pathinfo($file, PATHINFO_FILENAME) == 'content') {
+            $contentFile = $folder.'/'.$file;
+          }
+        }
+        
+        $config['content'] = $contentFile;
+        
+        $uri = '/'.ltrim($config['configs']['uri'], '/');
+        $routes[$uri] = $config;
+        
+        // If there's folders here
+        // its because theres sub pages
+        foreach(array_keys($content) as $subFolder) {
+          if (is_dir($subFolder)) {
+            $routes += $this->resolve($content);
+          }
+        }
+        
+      } else if(is_dir($folder)) {
+        $routes += $this->resolve($content);
+      }
+    }
+    return $routes;
   }
   
   /**
