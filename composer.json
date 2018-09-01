@@ -16,7 +16,8 @@
 	},
 	"require" : {
 		"php" : ">=7.1",
-		"erusev/parsedown" : "dev-master",
+		"erusev/parsedown" : "1.8.0-beta-5",
+        "erusev/parsedown-extra": "dev-master",
 		"verot/class.upload.php" : "dev-master",
 		"phpmailer/phpmailer" : "dev-master"
 	},

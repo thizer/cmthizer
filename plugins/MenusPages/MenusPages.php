@@ -43,14 +43,13 @@ class MenusPages extends AbstractPlugin {
         }
       }
     }
-    echo dump($pages, false);
-    echo dump($posts, false);
-    exit;
+    // echo dump($pages, false);
+    // echo dump($posts, false);
+    // exit;
   }
   
   public function posRun(): void {} // 10
   
-  private function 
 }
 
 

@@ -98,7 +98,7 @@ class CmThizer {
         
         // Allowed to read file?
         if (is_readable($route['content'])) {
-          $parseDown = new Parsedown();
+          $parseDown = new ParsedownExtra();
           $content = $parseDown->parse(file_get_contents($route['content']));
           
         } else {
