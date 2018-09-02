@@ -16,7 +16,7 @@
         Nosso Blog
       </a>
       <?php foreach ($menus['03.blog'] as $url => $title): ?>
-        <a class="list-group-item <?php echo (($this->baseUrl($uri) == $url) ? 'active' : ''); ?>" href="<?php echo $url; ?>" title="<?php echo $title; ?>">
+        <a class="list-group-item <?php echo (($this->url($uri) == $url) ? 'active' : ''); ?>" href="<?php echo $url; ?>" title="<?php echo $title; ?>">
           <?php echo $title; ?>
         </a>
       <?php endforeach; ?>

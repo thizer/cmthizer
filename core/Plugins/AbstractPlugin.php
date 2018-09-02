@@ -59,8 +59,23 @@ abstract class AbstractPlugin
   
   // #############################################
   
-  public function baseUrl(string $link): string {
-    return $this->instance->url($link);
+  /**
+   * This method allows to the user to call
+   * whatever method in the main CmThizer instance
+   * as the same way
+   * 
+   * @param type $name
+   * @param type $arguments
+   */
+  public function __call($name, $arguments) {
+    $result = null;
+    if (in_array($name, get_class_methods($this->getCmThizer()))) {
+      $method = new \ReflectionMethod($this->getCmThizer(), $name);
+      
+      if ($method->isPublic()) {
+        $result = $method->invokeArgs($this->getCmThizer(), $arguments);
+      }
+    }
+    return $result;
   }
-  
 }
