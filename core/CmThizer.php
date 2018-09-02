@@ -53,13 +53,12 @@ class CmThizer {
     } catch (Exception $ex) {
       if ($ex->getCode() == 404) {
         header(getenv('SERVER_PROTOCOL').' 404 Not Found', true, 404);
-        exit;
       } else if ($ex->getCode() == 500) {
         header(getenv('SERVER_PROTOCOL').' 500 Internal Server Error', true, 500);
-        exit;
       } else if (SHOW_ERRORS) {
         dump($ex);
       }
+      exit;
     } catch (Error $err) {
       dump($err);
     }
@@ -135,13 +134,12 @@ class CmThizer {
     } catch (Exception $ex) {
       if ($ex->getCode() == 404) {
         header(getenv('SERVER_PROTOCOL').' 404 Not Found', true, 404);
-        exit;
       } else if ($ex->getCode() == 500) {
         header(getenv('SERVER_PROTOCOL').' 500 Internal Server Error', true, 500);
-        exit;
       } else if (SHOW_ERRORS) {
         dump($ex);
       }
+      exit;
     }
     return $this;
   }
@@ -256,11 +254,10 @@ class CmThizer {
    */
   public function getUrl(string $link = ''): string {
     $url = getenv('REQUEST_SCHEME').'://'.getenv('HTTP_HOST');
-    $url .= $this->uri->getBasePath();
-    if ($link) {
-      $url .= '/'.trim($link, '/');
-    }
-    return $url;
+    
+    $href = preg_replace("/\/{2,}/", '/', $this->uri->getBasePath().'/'.$link);
+    
+    return $url.'/'.trim($href, '/');
   }
   
   public function url(string $link = ''): string {

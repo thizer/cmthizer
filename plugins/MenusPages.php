@@ -22,7 +22,7 @@ class MenusPages extends AbstractPlugin {
 
   public function preRun(): void {
     
-    $sitePath = $this->getCmThizer()->getSitePath();
+    $sitePath = $this->getSitePath();
     $siteItems = scandir_recursive($sitePath);
     
     // Organize site pages (and menus)
@@ -41,25 +41,25 @@ class MenusPages extends AbstractPlugin {
             $config = $this->getConfig($menuPath.'/config.json');
             
             // Se eh uma pasta significa que temos uma subpagina
-            $url = $this->getCmThizer()->url(ltrim(preg_replace("/\/{2,}/", '/', $config->uri), "/"));
+            $url = $this->url(ltrim(preg_replace("/\/{2,}/", '/', $config->uri), "/"));
             $menus[$menuName][$url] = $config->title;
             
           } else if (file_exists($path.'/config.json') && is_readable($path.'/config.json')) {
             
             // Assoc file to the pages list
             $params = json_decode(file_get_contents($path.'/config.json'));
-            $pages[$this->getCmThizer()->url($params->uri)] = $params->title;
+            $pages[$this->url($params->uri)] = $params->title;
           }
         }
       }
     }
     
-    $this->getCmThizer()->addViewVar('pages', $pages);
-    $this->getCmThizer()->addViewVar('menus', $menus);
+    $this->addViewVar('pages', $pages);
+    $this->addViewVar('menus', $menus);
     
     // If theres a sub layout we will render it before
     // the main layout
-    $route = $this->getCmThizer()->getCurrentRoute();
+    $route = $this->getCurrentRoute();
     $subLayout = $route['dirname'].'/sub-layout.phtml';
     $parentSubLayout = dirname($route['dirname']).'/sub-layout.phtml';
     
@@ -86,7 +86,7 @@ class MenusPages extends AbstractPlugin {
   
   private function renderSubLayout(array $route): void {
     
-    $template = $this->getCmThizer()->getTemplate();
+    $template = $this->getTemplate();
       
     // Variables to be appended to the view
     if (isset($route)) {
@@ -96,8 +96,8 @@ class MenusPages extends AbstractPlugin {
     }
 
     // Caminho base
-    $basePath = $this->getCmThizer()->getBasePath();
-    $baseUrl = $this->getCmThizer()->baseUrl();
+    $basePath = $this->getBasePath();
+    $baseUrl = $this->baseUrl();
     
     $content = '';
     if (file_exists($route['dirname'].'/content.md')) {
@@ -118,7 +118,7 @@ class MenusPages extends AbstractPlugin {
     }
     $content = ob_get_clean();
     
-    $this->getCmThizer()->addViewVar('content', $content);
+    $this->addViewVar('content', $content);
   }
 }
 
