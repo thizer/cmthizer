@@ -56,6 +56,4 @@ abstract class AbstractPlugin
   abstract function preRun(): void;
   
   abstract function posRun(): void;
-  
-  abstract function beforeRender(): void;
 }

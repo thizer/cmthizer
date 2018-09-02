@@ -81,11 +81,9 @@ class CmThizer {
       $template = $this->template;
       
       // Variables to be appended to the view
-      $route = $this->routes[$this->uri->getRouteName()];
-      if (isset($route)) {
-        foreach ($route as $varName => $varValue) {
-          $$varName = $varValue;
-        }
+      $route = $this->getCurrentRoute();
+      foreach ($route as $varName => $varValue) {
+        $$varName = $varValue;
       }
       
       // Caminho base
@@ -114,9 +112,6 @@ class CmThizer {
           $content = $parseDown->parse(file_get_contents($route['content']));
         }
       }
-      
-      // Call user BEFORE_RENDER plugins
-      $this->plugins->dispatch(AbstractPlugin::BEFORE_RENDER);
       
       // Including here, all these variables defined above
       // are accessible on the view

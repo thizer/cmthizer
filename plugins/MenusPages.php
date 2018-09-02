@@ -61,14 +61,12 @@ class MenusPages extends AbstractPlugin {
     // If theres a sub layout we will render it before
     // the main layout
     $route = $this->getCmThizer()->getCurrentRoute();
-    if (file_exists($route['dirname'].'/layout.phtml')) {
+    if (file_exists($route['dirname'].'/sub-layout.phtml')) {
       $this->renderSubLayout($route);
     }
   }
   
   public function posRun(): void {} // 10
-  
-  public function beforeRender():void {}
   
   private function getConfig(string $file): stdClass {
     $result = new stdClass();
@@ -106,7 +104,7 @@ class MenusPages extends AbstractPlugin {
     }
     
     ob_start();
-    include $route['dirname'].'/layout.phtml';
+    include $route['dirname'].'/sub-layout.phtml';
     $content = ob_get_clean();
     
     $this->getCmThizer()->addViewVar('content', $content);
