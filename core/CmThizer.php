@@ -360,13 +360,18 @@ class CmThizer {
   }
   
   public function getCurrentRoute(): array {
-    if (!isset($this->routes[$this->getUri()->getRouteName()])) {
+    $route = $this->routes[$this->getUri()->getRouteName()] ?? false;
+    if (!$route) {
       throw new Exception("Page not found", 404);
     }
-    return $this->routes[$this->getUri()->getRouteName()];
+    return $route;
   }
   
   public function addViewVar(string $name, $value): CmThizer {
+    if (!isset($this->routes[$this->getUri()->getRouteName()])) {
+      throw new Exception("Page not found", 404);
+    }
+    
     $this->routes[$this->getUri()->getRouteName()][$name] = $value;
     return $this;
   }
