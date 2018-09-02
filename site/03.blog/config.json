@@ -1,4 +1,5 @@
 {
   "title": "Nosso Blog",
-  "uri": "blog.html"
+  "uri": "blog.html",
+  "visible": true
 }

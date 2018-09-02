@@ -38,17 +38,26 @@ class MenusPages extends AbstractPlugin {
             // The menu name is the name of the parent folder
             $menuName = preg_replace("/^.+\//", '', $path);
             
+            // Load page configs
             $config = $this->getConfig($menuPath.'/config.json');
             
             // Se eh uma pasta significa que temos uma subpagina
-            $url = $this->url(ltrim(preg_replace("/\/{2,}/", '/', $config->uri), "/"));
-            $menus[$menuName][$url] = $config->title;
+            if ($config->visible) {
+              $url = $this->url(ltrim(preg_replace("/\/{2,}/", '/', $config->uri), "/"));
+              $menus[$menuName][$url] = $config->title;
+            }
             
           } else if (file_exists($path.'/config.json') && is_readable($path.'/config.json')) {
             
-            // Assoc file to the pages list
-            $params = json_decode(file_get_contents($path.'/config.json'));
-            $pages[$this->url($params->uri)] = $params->title;
+            // Get page configs
+            $params = $this->getConfig($path.'/config.json');
+            
+            // Check if page is defined as visible
+            if ($params->visible) {
+              
+              // Assoc file to the pages list
+              $pages[$this->url($params->uri)] = $params->title;
+            }
           }
         }
       }
@@ -80,6 +89,7 @@ class MenusPages extends AbstractPlugin {
     
     $result->uri = $result->uri ?? '/not-found';
     $result->title = $result->title ?? 'My Website';
+    $result->visible = $result->visible ?? true;
     
     return $result;
   }
