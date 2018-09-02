@@ -1,4 +1,4 @@
-# Ai que legal
+# Ai que legal{.text-success}
 
 A única área que eu acho, que vai exigir muita atenção nossa,
 e aí eu já aventei a hipótese de até criar um ministério.

@@ -88,7 +88,7 @@ class CmThizer {
       
       // Caminho base
       $basePath = $this->uri->getBasePath();
-      $baseUrl = $this->getBaseUrl();
+      $baseUrl = $this->baseUrl();
       
       // Load content
       $content = $route['content'];
@@ -239,14 +239,23 @@ class CmThizer {
    * @return string
    */
   public function getUrl(string $link = ''): string {
-    return getenv('REQUEST_SCHEME').'://'.getenv('HTTP_HOST').$this->uri->getBasePath().'/'. trim($link, '/');
+    $url = getenv('REQUEST_SCHEME').'://'.getenv('HTTP_HOST');
+    $url .= $this->uri->getBasePath();
+    if ($link) {
+      $url .= '/'.trim($link, '/');
+    }
+    return $url;
+  }
+  
+  public function url(string $link = ''): string {
+    return $this->getUrl($link);
   }
   
   public function getBaseUrl(string $link = ''): string {
     return $this->getUrl($link);
   }
   
-  public function url(string $link = ''): string {
+  public function baseUrl(string $link = ''): string {
     return $this->getUrl($link);
   }
   

@@ -56,4 +56,11 @@ abstract class AbstractPlugin
   abstract function preRun(): void;
   
   abstract function posRun(): void;
+  
+  // #############################################
+  
+  public function baseUrl(string $link): string {
+    return $this->instance->url($link);
+  }
+  
 }

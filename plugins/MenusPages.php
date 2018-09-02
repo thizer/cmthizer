@@ -24,7 +24,6 @@ class MenusPages extends AbstractPlugin {
     
     $sitePath = $this->getCmThizer()->getSitePath();
     $siteItems = scandir_recursive($sitePath);
-    $baseUrl = $this->getCmThizer()->getBaseUrl();
     
     // Organize site pages (and menus)
     $pages = array();
@@ -42,14 +41,14 @@ class MenusPages extends AbstractPlugin {
             $config = $this->getConfig($menuPath.'/config.json');
             
             // Se eh uma pasta significa que temos uma subpagina
-            $url = $baseUrl.ltrim(preg_replace("/\/{2,}/", '/', $config->uri), "/");
+            $url = $this->getCmThizer()->url(ltrim(preg_replace("/\/{2,}/", '/', $config->uri), "/"));
             $menus[$menuName][$url] = $config->title;
             
           } else if (file_exists($path.'/config.json') && is_readable($path.'/config.json')) {
             
             // Assoc file to the pages list
             $params = json_decode(file_get_contents($path.'/config.json'));
-            $pages[$baseUrl.$params->uri] = $params->title;
+            $pages[$this->getCmThizer()->url($params->uri)] = $params->title;
           }
         }
       }
@@ -61,7 +60,10 @@ class MenusPages extends AbstractPlugin {
     // If theres a sub layout we will render it before
     // the main layout
     $route = $this->getCmThizer()->getCurrentRoute();
-    if (file_exists($route['dirname'].'/sub-layout.phtml')) {
+    $subLayout = $route['dirname'].'/sub-layout.phtml';
+    $parentSubLayout = dirname($route['dirname']).'/sub-layout.phtml';
+    
+    if (file_exists($subLayout) || file_exists($parentSubLayout)) {
       $this->renderSubLayout($route);
     }
   }
@@ -95,7 +97,7 @@ class MenusPages extends AbstractPlugin {
 
     // Caminho base
     $basePath = $this->getCmThizer()->getBasePath();
-    $baseUrl = $this->getCmThizer()->getBaseUrl();
+    $baseUrl = $this->getCmThizer()->baseUrl();
     
     $content = '';
     if (file_exists($route['dirname'].'/content.md')) {
@@ -104,7 +106,16 @@ class MenusPages extends AbstractPlugin {
     }
     
     ob_start();
-    include $route['dirname'].'/sub-layout.phtml';
+    if (file_exists($route['dirname'].'/sub-layout.phtml')) {
+      
+      /** Render sub-layout from the root path **/
+      include $route['dirname'].'/sub-layout.phtml';
+      
+    } else if (file_exists(dirname($route['dirname']).'/sub-layout.phtml')) {
+      
+      /** Render sub-layout from the parent path **/
+      include dirname($route['dirname']).'/sub-layout.phtml';
+    }
     $content = ob_get_clean();
     
     $this->getCmThizer()->addViewVar('content', $content);

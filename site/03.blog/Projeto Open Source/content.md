@@ -1,4 +1,4 @@
-# Projeto Open Source
+# Projeto Open Source {.text-success}
 Aqui temos um bom exemplo de como as coisas devem funcionar
 
  1. Usar um arquivo para landing pages
