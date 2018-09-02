@@ -109,10 +109,21 @@ class MenusPages extends AbstractPlugin {
     $basePath = $this->getBasePath();
     $baseUrl = $this->baseUrl();
     
+    $fileTypes = array('content.php', 'content.phtml', 'content.html');
+    
     $content = '';
     if (file_exists($route['dirname'].'/content.md')) {
       $parseDown = new ParsedownExtra();
       $content = $parseDown->parse(file_get_contents($route['content']));
+    } else {
+      foreach (scandir($route['dirname']) as $fileName) {
+        if (!is_array($fileName) && in_array($fileName, $fileTypes)) {
+          ob_start();
+          include $route['dirname'].'/'.$fileName;
+          $content = ob_get_clean();
+          break;
+        }
+      }
     }
     
     ob_start();

@@ -1,0 +1,31 @@
+<h1 class="text-success">Projeto Open Source</h1>
+<p>
+  <em><?php echo $created; ?></em> - <?php echo $author; ?>
+  <br/>
+  <em>Categoria:</em> <b><?php echo $category; ?></b>
+</p>
+<p>
+  A equipe Thizer tem o prazer de anunciar este novo projeto de código livre e
+  gratuito feito para servir a comunidade.
+</p>
+<p>
+  Este projeto é importante porque gera um marco em nossa história. A partir
+  dele nós deixamos de depender de outros CMS's, que vale a pena lembrar nos
+  trouxeram diversas dores de cabeça por anos, com plugins funcionando muito
+  mal, lentidão e difícil manutenção. Passamos agora a contar com um gerador
+  de conteúdo confiável, rápido, sem banco de dados e simples. Realmente,
+  super simples!
+</p>
+<p>
+  Nós estamos ansiosos para saber o que você está achando de nosso cms.
+  O CmThizer foi feito para nós, para mim e para você!
+</p>
+<p>
+  Visite a página do projeto em <a href="https://github.com/thizer/cmthizer" target="_blank">github.com/thizer/cmthizer</a>
+  se você quer saber mais sobre instalação, criação de plugins e muito mais.
+</p>
+
+<?php foreach($tags as $tag): ?>
+  <a class="btn btn-secondary btn-sm" href="#<?php echo urlencode($tag); ?>"><?php echo $tag; ?></a>
+<?php endforeach; ?>
+
