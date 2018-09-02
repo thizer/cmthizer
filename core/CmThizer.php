@@ -51,7 +51,15 @@ class CmThizer {
       $this->plugins->dispatch(AbstractPlugin::POS_ROUTES);
       
     } catch (Exception $ex) {
-      dump($ex);
+      if ($ex->getCode() == 404) {
+        header(getenv('SERVER_PROTOCOL').' 404 Not Found', true, 404);
+        exit;
+      } else if ($ex->getCode() == 500) {
+        header(getenv('SERVER_PROTOCOL').' 500 Internal Server Error', true, 500);
+        exit;
+      } else if (SHOW_ERRORS) {
+        dump($ex);
+      }
     } catch (Error $err) {
       dump($err);
     }
@@ -67,11 +75,6 @@ class CmThizer {
       
       // Call user PRE_RUN plugins
       $this->plugins->dispatch(AbstractPlugin::PRE_RUN);
-      
-      // Check if route exists
-      if (!isset($this->routes[$this->uri->getRouteName()])) {
-        throw new Exception("404 - Page not found", 404);
-      }
       
       /**
        * Valores padrao para algumas variaveis que serao
@@ -130,7 +133,15 @@ class CmThizer {
       $this->plugins->dispatch(AbstractPlugin::POS_RUN);
       
     } catch (Exception $ex) {
-      dump($ex);
+      if ($ex->getCode() == 404) {
+        header(getenv('SERVER_PROTOCOL').' 404 Not Found', true, 404);
+        exit;
+      } else if ($ex->getCode() == 500) {
+        header(getenv('SERVER_PROTOCOL').' 500 Internal Server Error', true, 500);
+        exit;
+      } else if (SHOW_ERRORS) {
+        dump($ex);
+      }
     }
     return $this;
   }
@@ -166,6 +177,11 @@ class CmThizer {
         'content' => '',
         'dirname' => $this->getSitePath()
       );
+    }
+    
+    // Check if route exists
+    if (!isset($this->routes[$this->uri->getRouteName()])) {
+      throw new Exception("404 - Page not found", 404);
     }
     
     return $this;
@@ -347,6 +363,9 @@ class CmThizer {
   }
   
   public function getCurrentRoute(): array {
+    if (!isset($this->routes[$this->getUri()->getRouteName()])) {
+      throw new Exception("Page not found", 404);
+    }
     return $this->routes[$this->getUri()->getRouteName()];
   }
   
