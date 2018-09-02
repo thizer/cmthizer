@@ -12,7 +12,7 @@
     
     <h5>Posts</h5>
     <div class="list-group list-group-flush">
-      <a class="list-group-item <?php echo (($uri == 'blog.html') ? 'active' : ''); ?>" href="<?php echo $baseUrl; ?>/blog.html" title="Nosso Blog">
+      <a class="list-group-item <?php echo (($uri == 'blog.html') ? 'active' : ''); ?>" href="<?php echo $this->url('/blog.html'); ?>" title="Nosso Blog">
         Nosso Blog
       </a>
       <?php foreach ($menus['04.blog'] as $url => $title): ?>
