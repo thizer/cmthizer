@@ -18,8 +18,9 @@ RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
 RewriteRule ^(.*) - [E=BASE:%1]
 RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
 
-SetEnv DEVELOPMENT true
-SetEnv SHOW_ERRORS true
+# SetEnv DEVELOPMENT true
+# SetEnv SHOW_ERRORS true
 
-ErrorDocument 404 %{DOCUMENT_ROOT}"/assets/error404.html"
-ErrorDocument 500 "./assets/error500.html"
+ErrorDocument 404 /assets/error404.html
+ErrorDocument 403 /assets/error403.html
+ErrorDocument 500 /assets/error500.html

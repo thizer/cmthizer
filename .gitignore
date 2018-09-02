@@ -1,3 +1,4 @@
+var/
 vendor/
 !assets/dist/vendor
 docs
