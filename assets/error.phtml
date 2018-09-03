@@ -62,7 +62,6 @@
                 <tr>
                   <td>Stack Trace:</td>
                   <td>
-                    <?php // echo dump($exception->getTrace(), false); ?>
                     <?php foreach ($exception->getTrace() as $key => $trace): ?>
                       <div class="card mb-1" style="background-color: rgba(0,0,0,.05);">
                         <div class="card-body">

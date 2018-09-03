@@ -14,6 +14,8 @@ class Uri {
     $root = getenv('DOCUMENT_ROOT');
     $uri = preg_replace("/\?.+/", "", getenv('REQUEST_URI'));
     
+    // @TODO: DIRECTORY_SEPARATOR is different with Windows and Others
+    
     // Split parts of URI
     $uriParts = explode(DIRECTORY_SEPARATOR, trim($uri, DIRECTORY_SEPARATOR));
     $basePath = '';
@@ -33,7 +35,7 @@ class Uri {
     $this->route = '/'.trim($route, '/');
   }
   
-  public function getDocumentRoot() {
+  public function getDocumentRoot(): string {
     return $this->docRoot;
   }
   

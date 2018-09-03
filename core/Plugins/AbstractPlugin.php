@@ -2,6 +2,9 @@
 
 namespace CmThizer\Plugins;
 
+use CmThizer;
+use ReflectionMethod;
+
 abstract class AbstractPlugin
 {
   const PRE_URI = 1;
@@ -14,17 +17,16 @@ abstract class AbstractPlugin
   const POS_ROUTES = 7;
   const PRE_RUN = 8;
   const POS_RUN = 9;
-  const BEFORE_RENDER = 10;
   
   private $instance;
   
   private $active = true;
   
-  public function setCmThizerInstance(\CmThizer $instance): void {
+  public function setCmThizerInstance(CmThizer $instance): void {
     $this->instance = $instance;
   }
   
-  protected function getCmThizer(): \CmThizer {
+  protected function getCmThizer(): CmThizer {
     return $this->instance;
   }
   
@@ -64,13 +66,13 @@ abstract class AbstractPlugin
    * whatever method in the main CmThizer instance
    * as the same way
    * 
-   * @param type $name
-   * @param type $arguments
+   * @param string $name
+   * @param mixed $arguments
    */
   public function __call($name, $arguments) {
     $result = null;
     if (in_array($name, get_class_methods($this->getCmThizer()))) {
-      $method = new \ReflectionMethod($this->getCmThizer(), $name);
+      $method = new ReflectionMethod($this->getCmThizer(), $name);
       
       if ($method->isPublic()) {
         $result = $method->invokeArgs($this->getCmThizer(), $arguments);
