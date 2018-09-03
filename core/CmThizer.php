@@ -28,133 +28,108 @@ class CmThizer {
   private $routes = array();
   
   public function __construct() {
-    try {
-      $this->plugins = new LoadPlugins($this->pluginsPath, $this);
-      
-      // Resolve configuracoes de URL, DocumentRoot e BasePath 
-      $this->plugins->dispatch(AbstractPlugin::PRE_URI);
-      $this->uri = new Uri();
-      $this->plugins->dispatch(AbstractPlugin::POS_URI);
-      
-      // Resolve configuracoes de parametros de URL (GET)
-      $this->plugins->dispatch(AbstractPlugin::PRE_PARAMS);
-      $this->resolveParams();
-      $this->plugins->dispatch(AbstractPlugin::POS_PARAMS);
-      
-      // Resolve configuracoes de argumentos POST
-      $this->plugins->dispatch(AbstractPlugin::PRE_POST);
-      $this->resolvePost();
-      $this->plugins->dispatch(AbstractPlugin::POS_POST);
-      
-      $this->plugins->dispatch(AbstractPlugin::PRE_ROUTES);
-      $this->resolveRoutes();
-      $this->plugins->dispatch(AbstractPlugin::POS_ROUTES);
-      
-    } catch (Exception $ex) {
-      if ($ex->getCode() == 404) {
-        header(getenv('SERVER_PROTOCOL').' 404 Not Found', true, 404);
-      } else if ($ex->getCode() == 500) {
-        header(getenv('SERVER_PROTOCOL').' 500 Internal Server Error', true, 500);
-      } else if (SHOW_ERRORS) {
-        dump($ex);
-      }
-      exit;
-    } catch (Error $err) {
-      dump($err);
-    }
+    $this->plugins = new LoadPlugins($this->pluginsPath, $this);
+    
+    // Resolve configuracoes de URL, DocumentRoot e BasePath 
+    $this->plugins->dispatch(AbstractPlugin::PRE_URI);
+    $this->uri = new Uri();
+    $this->plugins->dispatch(AbstractPlugin::POS_URI);
+    
+    // Resolve configuracoes de parametros de URL (GET)
+    $this->plugins->dispatch(AbstractPlugin::PRE_PARAMS);
+    $this->resolveParams();
+    $this->plugins->dispatch(AbstractPlugin::POS_PARAMS);
+    
+    // Resolve configuracoes de argumentos POST
+    $this->plugins->dispatch(AbstractPlugin::PRE_POST);
+    $this->resolvePost();
+    $this->plugins->dispatch(AbstractPlugin::POS_POST);
+    
+    $this->plugins->dispatch(AbstractPlugin::PRE_ROUTES);
+    $this->resolveRoutes();
+    $this->plugins->dispatch(AbstractPlugin::POS_ROUTES);
   }
   
-  public function run(): CmThizer {
-    try {
-      // Avoid a second call to this method
-      if ($this->isRunning()) {
-        return $this;
-      }
-      $this->running = true;
-      
-      // Call user PRE_RUN plugins
-      $this->plugins->dispatch(AbstractPlugin::PRE_RUN);
-      
-      /**
-       * Valores padrao para algumas variaveis que serao
-       * visiveis nas views
-       */
-      
-      $template = $this->template;
-      
-      // Variables to be appended to the view
-      $route = $this->getCurrentRoute();
-      foreach ($route as $varName => $varValue) {
-        $$varName = $varValue;
-      }
-      
-      // Caminho base
-      $basePath = $this->uri->getBasePath();
-      $baseUrl = $this->baseUrl();
-      
-      // Load content
-      $content = $route['content'];
-      if ($route['content'] && file_exists($route['content'])) {
-        
-        if (!is_readable($route['content'])) {
-          throw new Exception("Content file ({$route['content']}) does not exists or is not readable");
-        }
-        
-        $fileExt = pathinfo($route['content'], PATHINFO_EXTENSION);
-        
-        if (in_array($fileExt, array('phtml', 'php', 'html'))) {
-          
-          ob_start();
-          include $route['content'];
-          $content = ob_get_clean();
-          
-        } else {
-          // Allowed to read file?
-          $parseDown = new ParsedownExtra();
-          $content = $parseDown->parse(file_get_contents($route['content']));
-        }
-      }
-      
-      // Including here, all these variables defined above
-      // are accessible on the view
-      if ($template) {
-        include $this->sitePath.$template;
-      }
-      
-      // Com isso o editor nao marca essas
-      // variaveis como nao utilizadas. Ou seja,
-      // isso aqui nao serve para nada.
-      unset($basePath);
-      unset($baseUrl);
-      unset($content);
-      
-      // Call user POS_RUN plugins
-      $this->plugins->dispatch(AbstractPlugin::POS_RUN);
-      
-    } catch (Exception $ex) {
-      if ($ex->getCode() == 404) {
-        header(getenv('SERVER_PROTOCOL').' 404 Not Found', true, 404);
-      } else if ($ex->getCode() == 500) {
-        header(getenv('SERVER_PROTOCOL').' 500 Internal Server Error', true, 500);
-      } else if (SHOW_ERRORS) {
-        dump($ex);
-      }
-      exit;
+  public function run(): self {
+    // Avoid a second call to this method
+    if ($this->isRunning()) {
+      return $this;
     }
+    $this->running = true;
+    
+    // Call user PRE_RUN plugins
+    $this->plugins->dispatch(AbstractPlugin::PRE_RUN);
+    
+    /**
+     * Valores padrao para algumas variaveis que serao
+     * visiveis nas views
+     */
+    
+    $template = $this->template;
+    
+    // Variables to be appended to the view
+    $route = $this->getCurrentRoute();
+    foreach ($route as $varName => $varValue) {
+      $$varName = $varValue;
+    }
+    
+    // Caminho base
+    $basePath = $this->uri->getBasePath();
+    $baseUrl = $this->baseUrl();
+    
+    // Load content
+    $content = $route['content'];
+    if ($route['content'] && file_exists($route['content'])) {
+      
+      if (!is_readable($route['content'])) {
+        throw new Exception("Content file ({$route['content']}) does not exists or is not readable");
+      }
+      
+      $fileExt = pathinfo($route['content'], PATHINFO_EXTENSION);
+      
+      if (in_array($fileExt, array('phtml', 'php', 'html'))) {
+        
+        ob_start();
+        include $route['content'];
+        $content = ob_get_clean();
+        
+      } else {
+        // Allowed to read file?
+        $parseDown = new ParsedownExtra();
+        $content = $parseDown->parse(file_get_contents($route['content']));
+      }
+    }
+    
+    // Including here, all these variables defined above
+    // are accessible on the view
+    if ($template) {
+      include $this->sitePath.$template;
+    }
+    
+    // Com isso o editor nao marca essas
+    // variaveis como nao utilizadas. Ou seja,
+    // isso aqui nao serve para nada.
+    unset($basePath);
+    unset($baseUrl);
+    unset($content);
+    
+    // Call user POS_RUN plugins
+    $this->plugins->dispatch(AbstractPlugin::POS_RUN);
+    
     return $this;
   }
   
-  private function resolveParams(): CmThizer {
+  private function resolveParams(): self {
     $this->params = (array) filter_input_array(INPUT_GET);
     return $this;
   }
   
-  private function resolvePost(): CmThizer {
+  private function resolvePost(): self {
     $this->post = (array) filter_input_array(INPUT_POST);
     return $this;
   }
   
-  private function resolveRoutes(): CmThizer {
+  private function resolveRoutes(): self {
     
     $dirItems = scandir_recursive($this->sitePath);
     
@@ -179,7 +154,7 @@ class CmThizer {
     
     // Check if route exists
     if (!isset($this->routes[$this->uri->getRouteName()])) {
-      throw new Exception("404 - Page not found", 404);
+      throw new Exception("Page not found", 404);
     }
     
     return $this;
@@ -281,7 +256,7 @@ class CmThizer {
     return $this->uri->getBasePath();
   }
   
-  public function setTemplate(string $name): CmThizer {
+  public function setTemplate(string $name): self {
     $this->template = $name.'.phtml';
     return $this;
   }
@@ -290,7 +265,7 @@ class CmThizer {
     return $this->template;
   }
   
-  public function setLandingPage(string $name): CmThizer {
+  public function setLandingPage(string $name): self {
     $this->landingPage = $name.'.phtml';
     return $this;
   }
@@ -299,7 +274,7 @@ class CmThizer {
     return $this->landingPage;
   }
   
-  public function setSitePath(string $foldername): CmThizer {
+  public function setSitePath(string $foldername): self {
     $this->sitePath = $foldername;
     return $this;
   }
@@ -320,7 +295,7 @@ class CmThizer {
     return $this->plugins->get($name);
   }
   
-  public function setPluginsPath(string $foldername): CmThizer {
+  public function setPluginsPath(string $foldername): self {
     $this->pluginsPath = $foldername;
   }
   
@@ -367,7 +342,7 @@ class CmThizer {
     return $route;
   }
   
-  public function addViewVar(string $name, $value): CmThizer {
+  public function addViewVar(string $name, $value): self {
     if (!isset($this->routes[$this->getUri()->getRouteName()])) {
       throw new Exception("Page not found", 404);
     }

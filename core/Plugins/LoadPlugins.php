@@ -1,14 +1,15 @@
 <?php
 namespace CmThizer\Plugins;
 
-use function Composer\Autoload\includeFile;
+use InvalidArgumentException;
+use CmThizer;
 
 class LoadPlugins
 {
   private $cmThizerInstance;
   private $plugins = array();
   
-  public function __construct(string $pluginsPath, \CmThizer $cmThizerInstance) {
+  public function __construct(string $pluginsPath, CmThizer $cmThizerInstance) {
     
     $this->cmThizerInstance = $cmThizerInstance;
     
@@ -86,7 +87,7 @@ class LoadPlugins
           $plugin->beforeRender();
           break;
         default:
-          throw new \ErrorException("Unknown plugin dispatch type ($type)");
+          throw new InvalidArgumentException("Unknown plugin dispatch type ($type)");
       }
       
     } // Endforeach 

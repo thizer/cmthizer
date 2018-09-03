@@ -71,3 +71,87 @@ function in_array_any(array $needle, array $target): bool {
   
   return !empty(array_intersect($needle, $target));
 }
+
+function render_error_page(Throwable $exception, $showErrors = false, $errorFile = 'assets/error.phtml') {
+  
+  $validCodes = array(
+    "100","101","200","201","202","203","204","205","206",
+    "300","301","302","303","304","305","306","307",
+    "400","401","402","403","404","405","406","407","408","409","410","411","412","413","414","415","416","417",
+    "500","501","502","503","504","505"
+  );
+  
+  if (in_array($exception->getCode(), $validCodes)) {
+    http_response_code($exception->getCode());
+  }
+  
+  if (file_exists($errorFile) && is_readable($errorFile)) {
+    include $errorFile;
+  }
+  
+}
+
+/**
+ * Translate a throwable getTrance to a String
+ * !!! CUIDADO !!! funcao recursiva....
+ *
+ * @param mixed $args
+ * @param bool $root
+ * @return string
+ */
+function getTraceArgsAsString($args, bool $root = true) {
+  $argString = "";
+  
+  switch (gettype($args)) {
+    case 'string':
+      $argString .= '"' . $args . '"';
+      break;
+    case 'integer':
+    case 'float':
+    case 'double':
+      $argString .= '(' . gettype($args) . ') ' . $args;
+      break;
+    case 'boolean':
+      $argString .= ($args ? 'true' : 'false');
+      break;
+    case 'array':
+      if ($root) {
+        foreach ($args as $key => $arg) {
+          $argString .= getTraceArgsAsString($arg, false) . ", ";
+        }
+        $argString = preg_replace("/,(\s)?$/", "", $argString);
+      } else {
+        foreach ($args as $key => $arg) {
+          $argString .= '"' . $key . '" => ' . getTraceArgsAsString($arg, false) . ", ";
+        }
+        $argString = "array(" . preg_replace("/,(\s)?$/", "", $argString) . ")";
+      }
+      break;
+    case 'NULL':
+      $argString .= "NULL";
+      break;
+    case 'object':
+      $argString .= ($args == null) ? "NULL" : get_class($args);
+      break;
+    default:
+      // O proprio type
+      $argString .= gettype($args);
+  }
+  return $argString;
+}
+
+function str_maxlen(string $str, int $maxLen) {
+  if (strlen($str) > $maxLen) {
+    $str = substr($str, 0, ($maxLen-1)).'&#133;';
+  }
+  return $str;
+}
+
+
+
+
+
+
+
+
+
