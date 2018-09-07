@@ -13,7 +13,12 @@ class Sitemap extends AbstractPlugin {
   public function posPost(): void {}
   
   public function preRoutes(): void {}
-  public function posRoutes(): void {}
+  public function posRoutes(): void {
+    
+    if ($this->getUri()->getRouteName() == '/sitemap.xml') {
+      dump($this);
+    }
+  }
   
   public function preRun(): void {}
   public function posRun(): void {}

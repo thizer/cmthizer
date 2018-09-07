@@ -69,6 +69,10 @@ class CmThizer {
     
     // Variables to be appended to the view
     $route = $this->getCurrentRoute();
+    if (!$route) {
+      throw new Exception("Page not found", 404);
+    }
+    
     foreach ($route as $varName => $varValue) {
       $$varName = $varValue;
     }
@@ -164,11 +168,6 @@ class CmThizer {
         'content' => '',
         'dirname' => $this->getSitePath()
       );
-    }
-    
-    // Check if route exists
-    if (!isset($this->routes[$this->uri->getRouteName()])) {
-      throw new Exception("Page not found", 404);
     }
     
     return $this;
@@ -369,11 +368,7 @@ class CmThizer {
   }
   
   public function getCurrentRoute(): array {
-    $route = $this->routes[$this->getUri()->getRouteName()] ?? false;
-    if (!$route) {
-      throw new Exception("Page not found", 404);
-    }
-    return $route;
+    return $this->routes[$this->getUri()->getRouteName()] ?? array();
   }
   
   public function addViewVar(string $name, $value): self {
