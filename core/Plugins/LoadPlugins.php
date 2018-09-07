@@ -31,15 +31,17 @@ class LoadPlugins
     } // Endforeach
   }
   
-  private function append($filename): LoadPlugins {
+  public function append($filename): LoadPlugins {
     
     require_once $filename;
     $className = basename($filename, '.php');
     
     $classInstance = new $className();
-    if ($classInstance instanceof AbstractPlugin) {
-      $this->plugins[$className] = $classInstance;
+    if (!$classInstance instanceof AbstractPlugin) {
+      throw new \Exception('Plugins must extends to \CmThizer\Plugins\AbstractPlugin');
     }
+    $this->plugins[$className] = $classInstance;
+    
     return $this;
   }
   

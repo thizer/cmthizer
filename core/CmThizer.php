@@ -317,6 +317,11 @@ class CmThizer {
     return $this->plugins->get($name);
   }
   
+  public function appendPlugin(string $filename): self {
+    $this->plugins->append($filename);
+    return $this;
+  }
+  
   public function setPluginsPath(string $foldername): self {
     $this->pluginsPath = $foldername;
   }
