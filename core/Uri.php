@@ -46,4 +46,29 @@ class Uri {
   public function getRouteName(): string {
     return $this->route;
   }
+  
+  /**
+   * 
+   * @param string $link
+   * @return string
+   */
+  public function getUrl(string $link = ''): string {
+    $url = getenv('REQUEST_SCHEME').'://'.getenv('HTTP_HOST');
+    
+    $href = preg_replace("/\/{2,}/", '/', $this->getBasePath().'/'.$link);
+    
+    return $url.'/'.trim($href, '/');
+  }
+  
+  public function url(string $link = ''): string {
+    return $this->getUrl($link);
+  }
+  
+  public function getBaseUrl(string $link = ''): string {
+    return $this->getUrl($link);
+  }
+  
+  public function baseUrl(string $link = ''): string {
+    return $this->getUrl($link);
+  }
 }

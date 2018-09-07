@@ -9,5 +9,5 @@ entre Toledo e Coritiba.
 Foi mara
 
 {% for tag in tags %}
-  <a class="btn btn-secondary btn-sm" href="#{{ tag|urlencode() }}">{{ tag }}</a>
+  <a class="btn btn-secondary btn-sm" href="#{{ tag }}">{{ tag }}</a>
 {% endfor %}

@@ -100,8 +100,10 @@ class CmThizer {
       }
     }
     
-    $content = (new Twig\Environment(
-      new Twig\Loader\ArrayLoader(array('thetpl' => $content)), // Loader
+    /** Here we apply to the view the Twig template **/
+    /** Is possible to use twig inside markdown files **/
+    $content = (new \Twig\Environment(
+      new \Twig\Loader\ArrayLoader(array('thetpl' => $content)), // Loader
       array('debug' => DEVELOPMENT) // Params
     ))->render('thetpl', $route);
 
@@ -228,28 +230,43 @@ class CmThizer {
    */
   
   /**
+   * Alias to \CmThizer\Uri::getUrl method
    * 
    * @param string $link
    * @return string
    */
   public function getUrl(string $link = ''): string {
-    $url = getenv('REQUEST_SCHEME').'://'.getenv('HTTP_HOST');
-    
-    $href = preg_replace("/\/{2,}/", '/', $this->uri->getBasePath().'/'.$link);
-    
-    return $url.'/'.trim($href, '/');
+    return $this->uri->getUrl($link);
   }
   
+  /**
+   * Alias to \CmThizer\Uri::getUrl method
+   * 
+   * @param string $link
+   * @return string
+   */
   public function url(string $link = ''): string {
-    return $this->getUrl($link);
+    return $this->uri->getUrl($link);
   }
   
+  /**
+   * Alias to \CmThizer\Uri::getUrl method
+   * 
+   * @param string $link
+   * @return string
+   */
   public function getBaseUrl(string $link = ''): string {
-    return $this->getUrl($link);
+    return $this->uri->getUrl($link);
   }
   
+  /**
+   * Alias to \CmThizer\Uri::getUrl method
+   * 
+   * @param string $link
+   * @return string
+   */
   public function baseUrl(string $link = ''): string {
-    return $this->getUrl($link);
+    return $this->uri->getUrl($link);
   }
   
   /**

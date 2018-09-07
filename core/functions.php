@@ -86,7 +86,16 @@ function render_error_page(Throwable $exception, $showErrors = false, $errorFile
   }
   
   if (file_exists($errorFile) && is_readable($errorFile)) {
+    
+    // The uri object resolve url with localhost, virtualhost, etc...
+    $uri = new \CmThizer\Uri();
+    
     include $errorFile;
+  } else if ($showErrors) {
+    echo $exception->getCode().' - '.$exception->getMessage();
+    dump($exception);
+  } else {
+    exit('Error nº'.$exception->getCode().' - Something went wrong');
   }
   
 }
