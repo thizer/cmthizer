@@ -1,5 +1,6 @@
 {
   "title": "CmThizer - CMS",
+  "subtitle": "Content Management System",
   "uri": "/",
   "template": "landing-page.phtml"
 }
