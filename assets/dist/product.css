@@ -75,3 +75,7 @@
 }
 
 .overflow-hidden { overflow: hidden; }
+
+#presentation {
+	min-height: calc(100vh - 48px - 16px);
+}
