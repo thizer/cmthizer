@@ -100,6 +100,11 @@ class CmThizer {
       }
     }
     
+    $content = (new Twig\Environment(
+      new Twig\Loader\ArrayLoader(array('thetpl' => $content)), // Loader
+      array('debug' => DEVELOPMENT) // Params
+    ))->render('thetpl', $route);
+
     // Including here, all these variables defined above
     // are accessible on the view
     if ($template) {
