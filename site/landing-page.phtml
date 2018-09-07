@@ -1,17 +1,19 @@
-
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="Thizer Aplicativos e Sistemas">
     <!-- <link rel="icon" href="../../../../favicon.ico"> -->
 
     <title><?php echo $title; ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="<?php echo $this->url('/assets/dist/css/bootstrap.min.css'); ?>" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="<?php echo $this->url('/assets/dist/vendor/font-awesome/css/font-awesome.min.css'); ?>">
 
     <!-- Custom styles for this template -->
     <link href="<?php echo $this->url('/assets/dist/product.css'); ?>" rel="stylesheet">
@@ -21,93 +23,99 @@
 
     <nav class="site-header sticky-top py-1">
       <div class="container d-flex flex-column flex-md-row justify-content-between">
-        <a class="py-2" href="<?php echo $baseUrl; ?>">
+        <a class="py-2" href="{{ baseUrl }}">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="d-block mx-auto"><circle cx="12" cy="12" r="10"></circle><line x1="14.31" y1="8" x2="20.05" y2="17.94"></line><line x1="9.69" y1="8" x2="21.17" y2="8"></line><line x1="7.38" y1="12" x2="13.12" y2="2.06"></line><line x1="9.69" y1="16" x2="3.95" y2="6.06"></line><line x1="14.31" y1="16" x2="2.83" y2="16"></line><line x1="16.62" y1="12" x2="10.88" y2="21.94"></line></svg>
         </a>
-        <?php if(isset($pages)): ?>
-          <?php foreach ($pages as $url => $page): ?>
-            <a class="py-2 d-none d-md-inline-block" href="<?php echo $url; ?>"><?php echo $page; ?></a>
-          <?php endforeach; ?>
-        <?php endif; ?>
+        {# Here we got an example on how to use twig, if you want to #}
+        {% for url,page in pages if url != baseUrl %}
+          <a class="py-2 d-none d-md-inline-block" href="{{ url }}">{{ page }}</a>
+        {% endfor %}
       </div>
     </nav>
 
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
-      <div class="col-md-5 p-lg-5 mx-auto my-5">
-        <h1 class="display-4 font-weight-normal"><?php echo $title; ?></h1>
-        <p class="lead font-weight-normal">And an even wittier subheading to boot. Jumpstart your marketing efforts with this example based on Apple's marketing pages.</p>
-        <a class="btn btn-outline-secondary" href="#">Coming soon</a>
+      <div class="col-md-6 p-lg-5 mx-auto my-5">
+        <h1 class="display-4 font-weight-normal">{{ title }}</h1>
+        <p class="lead font-weight-normal">
+          Hello. We are <a href="https://facebook.com/thizer.apps" target="_blank">Thizer Apps</a> and we developed this Open Source
+          project to help the community with a very light, simple, productive and functional software to stare websites and blogs
+          as fast as you can say:
+          <br/>
+          "Oh my God, that is really light and simple!"
+        </p>
+        <a class="btn btn-outline-secondary" href="#"><i class="fa fa-github-alt"></i> View Code</a>
+        <a class="btn btn-outline-success" href="#"><i class="fa fa-download"></i> Download</a>
       </div>
       <div class="product-device shadow-sm d-none d-md-block"></div>
       <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
     </div>
 
     <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
-      <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-        <div class="my-3 py-3">
-          <h2 class="display-5">Another headline</h2>
-          <p class="lead">And an even wittier subheading.</p>
+      
+      <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-light overflow-hidden">
+        <div class="my-3 py-3 text-center">
+          <h2 class="display-5">
+            <i class="fa fa-database"></i>
+            No Database
+          </h2>
+          <p class="lead">You may don't need it...</p>
         </div>
-        <div class="bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
-      </div>
-      <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-        <div class="my-3 p-3">
-          <h2 class="display-5">Another headline</h2>
-          <p class="lead">And an even wittier subheading.</p>
+        <div class="bg-light shadow-sm mx-auto text-dark p-5 text-justify" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+          Yeah! By default, CmThizer doesn't need a database to work. Actually, we don't
+          intent to improve this. By the way, you can configure it as you want with
+          a simple plugin.
         </div>
-        <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
       </div>
+      
+      <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-dark overflow-hidden">
+        <div class="my-3 py-3 text-center">
+          <h2 class="display-5">
+            <i class="fa fa-file-text-o"></i>
+            Markdown Support
+          </h2>
+          <p class="lead">Write your content with pure markdown!</p>
+        </div>
+        <div class="bg-dark shadow-sm mx-auto text-light p-5 text-justify" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+          This is <s>fucking</s> awesome! Avoid complicated content with PHP, HMTL, TAGS, <s>shits</s>... Write your content
+          only with markdown files <b>if</b> you want to.
+        </div>
+      </div>
+      
     </div>
-
+    
     <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
-      <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-        <div class="my-3 p-3">
-          <h2 class="display-5">Another headline</h2>
-          <p class="lead">And an even wittier subheading.</p>
+      
+      <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-dark overflow-hidden">
+        <div class="my-3 py-3 text-center">
+          <h2 class="display-5">
+            <i class="fa fa-leaf"></i>
+            Twig Symfony
+          </h2>
+          <p class="lead">No cache, no trouble</p>
         </div>
-        <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
-      </div>
-      <div class="bg-primary mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-        <div class="my-3 py-3">
-          <h2 class="display-5">Another headline</h2>
-          <p class="lead">And an even wittier subheading.</p>
+        <div class="bg-primary shadow-sm mx-auto text-white p-5 text-justify" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+          The most incredible thing here you can use your variables and logic <b>even with markdown files</b>
+          throught <a href="https://twig.symfony.com/" target="_blank" class="text-warning">Twig</a> statements. Don't worry, about a thing...
+          <br/>
+          Ps.: By default we don't store cache with <a href="https://twig.symfony.com/" target="_blank" class="text-warning">Twig</a>
+          because it may cause permission issues. Our focus is proctivity. You can create a plugin to do it. It's very easy!
         </div>
-        <div class="bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
       </div>
-    </div>
-
-    <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
-      <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-        <div class="my-3 p-3">
-          <h2 class="display-5">Another headline</h2>
-          <p class="lead">And an even wittier subheading.</p>
+      
+      <div class="bg-primary mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-light overflow-hidden">
+        <div class="my-3 py-3 text-center">
+          <h2 class="display-5">
+            <i class="fa fa-plug"></i>
+            Plugins FTW
+          </h2>
+          <p class="lead">Improve you site as you need</p>
         </div>
-        <div class="bg-white shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
-      </div>
-      <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-        <div class="my-3 py-3">
-          <h2 class="display-5">Another headline</h2>
-          <p class="lead">And an even wittier subheading.</p>
+        <div class="bg-light shadow-sm mx-auto text-dark p-5 text-justify" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+          To create plugins with CmThizer is very easy and with it you can control <s>almost</s> everything
+          in the system. Easy peasy
         </div>
-        <div class="bg-white shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
       </div>
-    </div>
-
-    <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
-      <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-        <div class="my-3 p-3">
-          <h2 class="display-5">Another headline</h2>
-          <p class="lead">And an even wittier subheading.</p>
-        </div>
-        <div class="bg-white shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
-      </div>
-      <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-        <div class="my-3 py-3">
-          <h2 class="display-5">Another headline</h2>
-          <p class="lead">And an even wittier subheading.</p>
-        </div>
-        <div class="bg-white shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
-      </div>
+      
     </div>
 
     <footer class="bg-dark text-white mt-5">

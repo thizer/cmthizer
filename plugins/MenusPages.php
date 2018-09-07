@@ -99,10 +99,8 @@ class MenusPages extends AbstractPlugin {
     $template = $this->getTemplate();
       
     // Variables to be appended to the view
-    if (isset($route)) {
-      foreach ($route as $varName => $varValue) {
-        $$varName = $varValue;
-      }
+    foreach ($route as $varName => $varValue) {
+      $$varName = $varValue;
     }
 
     // Caminho base

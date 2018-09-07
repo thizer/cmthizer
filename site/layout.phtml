@@ -13,6 +13,9 @@
     <!-- Bootstrap core CSS -->
     <link href="<?php echo $this->url('/assets/dist/css/bootstrap.min.css'); ?>" rel="stylesheet">
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="<?php echo $this->url('/assets/dist/vendor/font-awesome/css/font-awesome.min.css'); ?>">
+    
     <!-- Custom styles for this template -->
     <link href="<?php echo $this->url('/assets/dist/product.css'); ?>" rel="stylesheet">
   </head>
@@ -26,7 +29,9 @@
         </a>
         <?php if(isset($pages)): ?>
           <?php foreach ($pages as $url => $page): ?>
-            <a class="py-2 d-none d-md-inline-block" href="<?php echo $url; ?>"><?php echo $page; ?></a>
+            <?php if($url != $baseUrl): ?>
+              <a class="py-2 d-none d-md-inline-block" href="<?php echo $url; ?>"><?php echo $page; ?></a>
+            <?php endif; ?>
           <?php endforeach; ?>
         <?php endif; ?>
       </div>

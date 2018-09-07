@@ -74,7 +74,7 @@ class CmThizer {
     }
     
     // Caminho base
-    $basePath = $this->uri->getBasePath();
+    $basePath = $this->getBasePath();
     $baseUrl = $this->baseUrl();
     
     // Load content
@@ -105,12 +105,19 @@ class CmThizer {
     $content = (new \Twig\Environment(
       new \Twig\Loader\ArrayLoader(array('thetpl' => $content)), // Loader
       array('debug' => DEVELOPMENT) // Params
-    ))->render('thetpl', $route);
+    ))->render('thetpl', array_merge($route, array('basePath' => $basePath, 'baseUrl' => $baseUrl)));
 
     // Including here, all these variables defined above
     // are accessible on the view
     if ($template) {
+      ob_start();
       include $this->sitePath.$template;
+      $layout = ob_get_clean();
+      
+      echo (new \Twig\Environment(
+        new \Twig\Loader\ArrayLoader(array('thelayout' => $layout)), // Loader
+        array('debug' => DEVELOPMENT) // Params
+      ))->render('thelayout', array_merge($route, array('basePath' => $basePath, 'baseUrl' => $baseUrl)));
     }
     
     // Com isso o editor nao marca essas
