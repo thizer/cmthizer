@@ -27,6 +27,17 @@
  * Dummy devices (replace them with your own or something else entirely!)
  */
 
+#presentation {
+  height: calc(100vh - 48px - 16px);
+}
+#presentation .product-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0.2;
+}
 .product-device {
   position: absolute;
   right: 10%;
@@ -38,7 +49,6 @@
   -webkit-transform: rotate(30deg);
   transform: rotate(30deg);
 }
-
 .product-device::before {
   position: absolute;
   top: 10%;
@@ -49,13 +59,12 @@
   background-color: rgba(255, 255, 255, .1);
   border-radius: 5px;
 }
-
 .product-device-2 {
   top: -25%;
   right: auto;
   bottom: 0;
   left: 5%;
-  background-color: #e5e5e5;
+  background-color: rgba(0,0,0,0.2);
 }
 
 
@@ -76,6 +85,3 @@
 
 .overflow-hidden { overflow: hidden; }
 
-#presentation {
-  height: calc(100vh - 48px - 16px);
-}

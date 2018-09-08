@@ -34,6 +34,10 @@
     </nav>
 
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light" id="presentation">
+      <div class="product-background" style="background-image: url('<?php echo $this->url('/assets/dist/image/landing-background-'.rand(1, 4).'.jpg'); ?>')"></div>
+      <div class="product-device shadow-sm d-none d-md-block"></div>
+      <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+      
       <div class="col-md-8 p-lg-5 mx-auto my-5">
         <h1 class="display-3 font-weight-normal">{{ title }}</h1>
         <h2 class="display-5 font-weight-normal">{{ subtitle }}</h2>
@@ -49,8 +53,6 @@
           <i class="fa fa-download"></i> Download (master)
         </a>
       </div>
-      <div class="product-device shadow-sm d-none d-md-block"></div>
-      <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
     </div>
 
     <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
@@ -184,6 +186,17 @@
         bg: '#55595c',
         fg: '#eceeef',
         text: 'Thumbnail'
+      });
+
+      $(function() {
+        var i = 1;
+        setInterval(function() {
+          i++;
+          if (i > 4) {
+            i = 1;
+          }
+          $('#presentation .product-background').css('background-image', "url('<?php echo $this->url('/assets/dist/image/landing-background-');?>"+i+".jpg')");
+        }, 15000);
       });
     </script>
   </body>

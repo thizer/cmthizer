@@ -1,4 +1,4 @@
-# Sobre Nós {.sobre-nos .teste}
+# About us {.sobre-nos .teste}
 
 [thizer]: https://github.com/thizer "Thizer on github"
 
