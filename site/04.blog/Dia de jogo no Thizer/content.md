@@ -1,4 +1,5 @@
-# Fomos assistir o jogo!{.text-success}
+#{{ title }}{.text-success}
+<hr>
 
 _{{ created }}_ - {{ author }}<br>
 _Categoria:_ **{{ category }}**

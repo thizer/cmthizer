@@ -1,4 +1,5 @@
-# Ai que legal{.text-success}
+# {{ title }}{.text-success}
+<hr>
 
 A única área que eu acho, que vai exigir muita atenção nossa,
 e aí eu já aventei a hipótese de até criar um ministério.

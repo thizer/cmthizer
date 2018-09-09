@@ -1,10 +1,7 @@
 <div class="row">
   <div class="col-9">
-  
-    <h1>Acompanhe nosso trabalho</h1>
-    <p>Conteúdo segue abaixo</p>
     
-    <hr/>
+    <!-- Blog Content -->
     <?php echo $content; ?>
     
   </div>
@@ -12,7 +9,7 @@
     
     <h5>Posts</h5>
     <div class="list-group list-group-flush">
-      <a class="list-group-item <?php echo (($uri == 'blog.html') ? 'active' : ''); ?>" href="<?php echo $this->url('/blog.html'); ?>" title="Nosso Blog">
+      <a class="list-group-item <?php echo (($uri == '/blog') ? 'active' : ''); ?>" href="<?php echo $this->url('/blog'); ?>" title="Nosso Blog">
         Nosso Blog
       </a>
       <?php foreach ($menus['04.blog'] as $url => $title): ?>

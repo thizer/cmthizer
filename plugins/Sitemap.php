@@ -15,8 +15,26 @@ class Sitemap extends AbstractPlugin {
   public function preRoutes(): void {}
   public function posRoutes(): void {
     
+    /**
+     * Access to the URI /sitemap.xml
+     */
+    
     if ($this->getUri()->getRouteName() == '/sitemap.xml') {
-      dump($this);
+      
+      $sitemap = '<?xml version="1.0" encoding="UTF-8"?>';
+      $sitemap .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+      
+      foreach (array_keys($this->getRoutes()) as $uri) {
+        $sitemap .= '<url>';
+        $sitemap .= '<loc>'.$this->url($uri).'</loc>';
+        $sitemap .= '<changefreq>monthly</changefreq>';
+        $sitemap .= '<priority>'.(($uri == '/') ? '1.00' : '0.80').'</priority>';
+        $sitemap .= '</url>';
+      }
+      $sitemap .= '</urlset>';
+      
+      header("Content-type: application/xml");
+      exit($sitemap);
     }
   }
   

@@ -4,7 +4,7 @@ include_once './core/CmThizer.php';
 try {
   $cms = new CmThizer();
   
-  //$cms->getPlugin('MenusPages')->setActive(false);
+//  $cms->getPlugin('Sitemap')->setActive(false);
   
   $cms->run();
   

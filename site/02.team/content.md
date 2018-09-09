@@ -1,4 +1,5 @@
-# Team Thizer
+# {{ title }}{.text-success}
+<hr>
 
 This is our awesome team!
 

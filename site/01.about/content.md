@@ -1,4 +1,5 @@
-# About us {.sobre-nos .teste}
+# {{ title }}{.text-success}
+<hr>
 
 [thizer]: https://github.com/thizer "Thizer on github"
 
