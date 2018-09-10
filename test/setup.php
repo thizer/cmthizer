@@ -1,8 +1,15 @@
 <?php
 /**
- * Thizer Apps
+ *  _____ _     _                   _    ____ ___
+ * |_   _| |__ (_)_______ _ __     / \  |  _ \_ _|
+ *   | | | '_ \| |_  / _ \ '__|   / _ \ | |_) | |
+ *   | | | | | | |/ /  __/ |     / ___ \|  __/| |
+ *   |_| |_| |_|_/___\___|_|    /_/   \_\_|  |___|
+ *
+ *      Transformando vidas, realizando sonhos.
+ *
+ * @author Thizer
  */
-
 error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', true);
 
