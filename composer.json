@@ -15,10 +15,14 @@
 	"require" : {
 		"php" : ">=7.0",
 		"erusev/parsedown" : "1.8.0-beta-5",
-                "erusev/parsedown-extra": "dev-master",
+    "erusev/parsedown-extra": "dev-master",
 		"twig/twig": "^2.0",
 		"verot/class.upload.php" : "dev-master",
 		"phpmailer/phpmailer" : "dev-master"
+	},
+	"require-dev": {
+	  "phpunit/phpunit": "4.8.*",
+    "satooshi/php-coveralls": "^v2.0.0" 
 	},
 	"autoload" : {
 		"classmap" : [
