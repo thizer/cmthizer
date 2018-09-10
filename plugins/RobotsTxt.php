@@ -3,17 +3,17 @@ use CmThizer\Plugins\AbstractPlugin;
 
 class RobotsTxt extends AbstractPlugin {
   
-  public function preUri(): void {}
-  public function posUri(): void {}
+  public function preUri() {}
+  public function posUri() {}
   
-  public function preParams(): void {}
-  public function posParams(): void {}
+  public function preParams() {}
+  public function posParams() {}
   
-  public function prePost(): void {}
-  public function posPost(): void {}
+  public function prePost() {}
+  public function posPost() {}
   
-  public function preRoutes(): void {}
-  public function posRoutes(): void {
+  public function preRoutes() {}
+  public function posRoutes() {
     
     /**
      * Access to the URI /robots.txt
@@ -39,6 +39,6 @@ class RobotsTxt extends AbstractPlugin {
     }
   }
   
-  public function preRun(): void {}
-  public function posRun(): void {}
+  public function preRun() {}
+  public function posRun() {}
 }

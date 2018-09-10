@@ -8,19 +8,19 @@ class MenusPages extends AbstractPlugin {
    * this methods will be executed.
    */
   
-  public function preUri(): void {} // 1
-  public function posUri(): void {} // 2
+  public function preUri() {} // 1
+  public function posUri() {} // 2
   
-  public function preParams(): void {} // 3
-  public function posParams(): void {} // 4
+  public function preParams() {} // 3
+  public function posParams() {} // 4
   
-  public function prePost(): void {} // 5
-  public function posPost(): void {} // 6
+  public function prePost() {} // 5
+  public function posPost() {} // 6
 
-  public function preRoutes(): void {} // 7
-  public function posRoutes(): void {} // 8
+  public function preRoutes() {} // 7
+  public function posRoutes() {} // 8
 
-  public function preRun(): void {
+  public function preRun() {
     
     $sitePath = $this->getSitePath();
     $siteItems = scandir_recursive($sitePath);
@@ -77,7 +77,7 @@ class MenusPages extends AbstractPlugin {
     }
   }
   
-  public function posRun(): void {} // 10
+  public function posRun() {} // 10
   
   private function getConfig(string $file): stdClass {
     $result = new stdClass();
@@ -94,7 +94,7 @@ class MenusPages extends AbstractPlugin {
     return $result;
   }
   
-  private function renderSubLayout(array $route): void {
+  private function renderSubLayout(array $route) {
     
     $template = $this->getTemplate();
       

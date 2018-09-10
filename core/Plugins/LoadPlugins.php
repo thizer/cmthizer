@@ -45,7 +45,7 @@ class LoadPlugins
     return $this;
   }
   
-  public function dispatch(int $type): void {
+  public function dispatch(int $type) {
     foreach($this->plugins as $plugin) {
       
       if (!$plugin->isActive()) {

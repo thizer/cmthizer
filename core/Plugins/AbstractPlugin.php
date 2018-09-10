@@ -22,7 +22,7 @@ abstract class AbstractPlugin
   
   private $active = true;
   
-  public function setCmThizerInstance(CmThizer $instance): void {
+  public function setCmThizerInstance(CmThizer $instance) {
     $this->instance = $instance;
   }
   
@@ -39,25 +39,25 @@ abstract class AbstractPlugin
     return $this->active;
   }
   
-  abstract function preUri(): void;
+  abstract function preUri();
 
-  abstract function posUri(): void;
+  abstract function posUri();
 
-  abstract function preParams(): void;
+  abstract function preParams();
 
-  abstract function posParams(): void;
+  abstract function posParams();
 
-  abstract function prePost(): void;
+  abstract function prePost();
 
-  abstract function posPost(): void;
+  abstract function posPost();
 
-  abstract function preRoutes(): void;
+  abstract function preRoutes();
 
-  abstract function posRoutes(): void;
+  abstract function posRoutes();
   
-  abstract function preRun(): void;
+  abstract function preRun();
   
-  abstract function posRun(): void;
+  abstract function posRun();
   
   // #############################################
   
