@@ -1,7 +1,7 @@
 {
 	"name" : "thizer/cmthizer",
 	"description" : "Content Management System",
-	"license" : "private",
+	"license" : "MIT",
 	"keywords" : [
 		"cms"
 	],
