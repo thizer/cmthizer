@@ -3,9 +3,11 @@ include_once './core/CmThizer.php';
 
 try {
   $cms = new CmThizer();
+  $cms->step1(); // alias to loadPlugins method
   
-//  $cms->getPlugin('Sitemap')->setActive(false);
-  
+//  $cms->getPlugin('MenusPages')->setActive(false);
+
+  $cms->step2(); // alias to dispatchConfigs
   $cms->run();
   
 } catch (Throwable $e) {

@@ -27,9 +27,35 @@ class CmThizer {
   
   private $routes = array();
   
-  public function __construct() {
+  /**
+   * Create the instance
+   */
+  public function __construct() { }
+  
+  /**
+   * Load plugin classes from the path, by default './plugins/'
+   * 
+   * @param string $pluginsPath
+   * @return \self
+   */
+  public function loadPlugins(string $pluginsPath = null): self {
+    if ($pluginsPath) {
+      $this->setPluginsPath($pluginsPath);
+    }
+    
     $this->plugins = new LoadPlugins($this->pluginsPath, $this);
     
+    return $this;
+  }
+  
+  /**
+   * Load the needle configs to the work.
+   * While load all this, dispatch plugins
+   * methods as right
+   * 
+   * @return \self
+   */
+  public function dispatchConfigs(): self {
     // Resolve configuracoes de URL, DocumentRoot e BasePath 
     $this->plugins->dispatch(AbstractPlugin::PRE_URI);
     $this->uri = new Uri();
@@ -48,8 +74,35 @@ class CmThizer {
     $this->plugins->dispatch(AbstractPlugin::PRE_ROUTES);
     $this->resolveRoutes();
     $this->plugins->dispatch(AbstractPlugin::POS_ROUTES);
+    
+    return $this;
   }
   
+  /**
+   * It is just an alias to the loadPlugins method.
+   * 
+   * @param string $pluginsPath
+   * @return \self
+   */
+  public function step1(string $pluginsPath = null): self {
+    return $this->loadPlugins($pluginsPath);
+  }
+  
+  /**
+   * It is just an alias to the dispatchConfigs method.
+   * 
+   * @return \self
+   */
+  public function step2(): self {
+    return $this->dispatchConfigs();
+  }
+  
+  /**
+   * When it's call the system will render layout and content 
+   * 
+   * @return \self
+   * @throws Exception
+   */
   public function run(): self {
     // Avoid a second call to this method
     if ($this->isRunning()) {
@@ -137,16 +190,31 @@ class CmThizer {
     return $this;
   }
   
+  /**
+   * Resolve $_GET params
+   * 
+   * @return \self
+   */
   private function resolveParams(): self {
     $this->params = (array) filter_input_array(INPUT_GET);
     return $this;
   }
   
+  /**
+   * Resolve $_POST params
+   * 
+   * @return \self
+   */
   private function resolvePost(): self {
     $this->post = (array) filter_input_array(INPUT_POST);
     return $this;
   }
   
+  /**
+   * Determine routes params, it mean, all site url's.
+   * 
+   * @return \self
+   */
   private function resolveRoutes(): self {
     
     $dirItems = scandir_recursive($this->sitePath);
@@ -157,7 +225,7 @@ class CmThizer {
      * ## RECURSIVA ##
      */
     
-    $this->routes = $this->resolve($dirItems);
+    $this->routes = $this->organizeRoutes($dirItems);
     
     // If was not created a home landing page, we do it
     if (!isset($this->routes['/'])) {
@@ -173,7 +241,13 @@ class CmThizer {
     return $this;
   }
   
-  private function resolve(array $items): array {
+  /**
+   * Find all routes by files on site path.
+   * 
+   * @param array $items
+   * @return array
+   */
+  private function organizeRoutes(array $items): array {
     $routes = array();
     
     $defaultValues = array(
@@ -218,12 +292,12 @@ class CmThizer {
         // its because theres sub pages
         foreach(array_keys($content) as $subFolder) {
           if (is_dir($subFolder)) {
-            $routes += $this->resolve($content);
+            $routes += $this->organizeRoutes($content);
           }
         }
         
       } else if(is_dir($folder)) {
-        $routes += $this->resolve($content);
+        $routes += $this->organizeRoutes($content);
       }
     }
     return $routes;
@@ -372,11 +446,9 @@ class CmThizer {
   }
   
   public function addViewVar(string $name, $value): self {
-    if (!isset($this->routes[$this->getUri()->getRouteName()])) {
-      throw new Exception("Page not found", 404);
+    if ($this->getCurrentRoute()) {
+      $this->routes[$this->getUri()->getRouteName()][$name] = $value;
     }
-    
-    $this->routes[$this->getUri()->getRouteName()][$name] = $value;
     return $this;
   }
   
