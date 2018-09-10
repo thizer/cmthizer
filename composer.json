@@ -2,9 +2,7 @@
 	"name" : "thizer/cmthizer",
 	"description" : "Content Management System",
 	"license" : "MIT",
-	"keywords" : [
-		"cms"
-	],
+	"keywords" : ["cms", "content", "management", "system", "blog", "site"],
 	"homepage" : "https://thizer.com",
 	"authors" : [{
 			"name" : "Thizer Apps",
