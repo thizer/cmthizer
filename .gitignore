@@ -4,3 +4,6 @@ nbproject/
 .settings
 .project
 .buildpath
+vendor/
+!assets/dist/vendor/
+

@@ -12,7 +12,9 @@
  */
 defined('TRAVIS') || define('TRAVIS', (bool) getenv('TRAVIS'));
 
-class Cmthizer1StartTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class Cmthizer1StartTest extends TestCase
 {
   private static $instance;
   
