@@ -1,5 +1,8 @@
 <?php
 include_once 'config.php';
+include_once 'Uri.php';
+include_once 'Plugins/AbstractPlugin.php';
+include_once 'Plugins/LoadPlugins.php';
 
 use CmThizer\Uri;
 use CmThizer\Plugins\AbstractPlugin;

@@ -16,13 +16,16 @@ if (SHOW_ERRORS) {
 // Everything is related to the root path
 chdir(dirname(__DIR__));
 
-if (file_exists('vendor/autoload.php')) {
+$loader = null;
+if (file_exists('../../autoload.php')) {
+  $loader = include '../../autoload.php';
+} else if (file_exists('vendor/autoload.php')) {
   $loader = include 'vendor/autoload.php';
-  
-  // If you want, can add your libraries here with composer
-  // $loader->add('System', 'library/.');
 } else {
   exit("Project dependencies not found, execute 'php composer.phar install' in the root of project");
 }
+
+// If you want, can add your libraries here with composer
+// $loader->add('System', 'library/.');
 
 include_once 'functions.php';
