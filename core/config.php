@@ -17,8 +17,10 @@ if (SHOW_ERRORS) {
 chdir(dirname(__DIR__));
 
 $loader = null;
-if (file_exists('../../autoload.php')) {
-  $loader = include '../../autoload.php';
+$root = getenv('DOCUMENT_ROOT');
+
+if (file_exists($root.'vendor/autoload.php')) {
+  $loader = include $root.'vendor/autoload.php';
 } else if (file_exists('vendor/autoload.php')) {
   $loader = include 'vendor/autoload.php';
 } else {
