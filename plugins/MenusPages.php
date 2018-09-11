@@ -69,11 +69,13 @@ class MenusPages extends AbstractPlugin {
     // If theres a sub layout we will render it before
     // the main layout
     $route = $this->getCurrentRoute();
-    $subLayout = $route['dirname'].'/sub-layout.phtml';
-    $parentSubLayout = dirname($route['dirname']).'/sub-layout.phtml';
-    
-    if (file_exists($subLayout) || file_exists($parentSubLayout)) {
-      $this->renderSubLayout($route);
+    if ($route) {
+      $subLayout = $route['dirname'].'/sub-layout.phtml';
+      $parentSubLayout = dirname($route['dirname']).'/sub-layout.phtml';
+
+      if (file_exists($subLayout) || file_exists($parentSubLayout)) {
+        $this->renderSubLayout($route);
+      }
     }
   }
   
