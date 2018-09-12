@@ -52,7 +52,7 @@ class Uri {
    * @param string $link
    * @return string
    */
-  public function getUrl(string $link = ''): string {
+  public function getUrl(?string $link = ''): string {
     $url = getenv('REQUEST_SCHEME').'://'.getenv('HTTP_HOST');
     
     $href = preg_replace("/\/{2,}/", '/', $this->getBasePath().'/'.$link);

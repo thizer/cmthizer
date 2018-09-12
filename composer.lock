@@ -108,12 +108,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "83faa53556ce2bb84b63a605586a17d2a09b89e7"
+                "reference": "9752980555bc8e1081b8a844676edd3dccdef59e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/83faa53556ce2bb84b63a605586a17d2a09b89e7",
-                "reference": "83faa53556ce2bb84b63a605586a17d2a09b89e7",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/9752980555bc8e1081b8a844676edd3dccdef59e",
+                "reference": "9752980555bc8e1081b8a844676edd3dccdef59e",
                 "shasum": ""
             },
             "require": {
@@ -166,7 +166,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2018-08-24T15:35:38+00:00"
+            "time": "2018-09-11T18:32:29+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",

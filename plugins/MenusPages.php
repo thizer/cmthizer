@@ -43,7 +43,7 @@ class MenusPages extends AbstractPlugin {
             
             // Se eh uma pasta significa que temos uma subpagina
             if ($config->visible) {
-              $url = $this->url(ltrim(preg_replace("/\/{2,}/", '/', $config->uri), "/"));
+              $url = ltrim(preg_replace("/\/{2,}/", '/', $config->uri), "/");
               $menus[$menuName][$url] = $config->title;
             }
             
@@ -56,7 +56,7 @@ class MenusPages extends AbstractPlugin {
             if ($params->visible) {
               
               // Assoc file to the pages list
-              $pages[$this->url($params->uri)] = $params->title;
+              $pages[$params->uri] = $params->title;
             }
           }
         }
