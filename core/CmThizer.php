@@ -318,7 +318,7 @@ class CmThizer {
    * @param string $link
    * @return string
    */
-  public function getUrl(?string $link = ''): string {
+  public function getUrl(string $link = ''): string {
     return $this->uri->getUrl($link);
   }
   
@@ -328,7 +328,7 @@ class CmThizer {
    * @param string $link
    * @return string
    */
-  public function url(?string $link = ''): string {
+  public function url(string $link = ''): string {
     return $this->uri->getUrl($link);
   }
   
@@ -338,7 +338,7 @@ class CmThizer {
    * @param string $link
    * @return string
    */
-  public function getBaseUrl(?string $link = ''): string {
+  public function getBaseUrl(string $link = ''): string {
     return $this->uri->getUrl($link);
   }
   
@@ -348,7 +348,7 @@ class CmThizer {
    * @param string $link
    * @return string
    */
-  public function baseUrl(?string $link = ''): string {
+  public function baseUrl(string $link = ''): string {
     return $this->uri->getUrl($link);
   }
   
