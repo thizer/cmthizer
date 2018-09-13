@@ -19,14 +19,14 @@ structure we intent to keep here.
 > documents. You may note that like this, your project will not be synchronized with `CmThizer`
 > repository so you will lost future updates, bug fixes and whatever...
 > 
-> <br/>
-> By this way, run `php composer.phar update` after download it
+> By this way, run `php composer.phar update` after download it.
 
+##### **Recommended:**{.mb-0}
 > The second and **recommended** is use it as a lib so you will keep updating with
-`composer update`. Your project will be always synchronized with latest version of
-`CmThizer` and you will never lost a thing.
+> `composer update`. Your project will be always synchronized with latest version of
+> `CmThizer` and you will never lost a thing.
 
-### Assuming you will use it as recommended
+### Assuming you will use it as recommended <i class="fa fa-smile-o"></i>
 
 For first create the folder for your site and start a [composer](https://getcomposer.org/doc/01-basic-usage.md) project.
 Add `thizer/cmthizer` as a dependency and run `php composer.phar install`. Your `composer.json` file will look like this:
@@ -48,8 +48,9 @@ Add `thizer/cmthizer` as a dependency and run `php composer.phar install`. Your 
 
 * `CmThizer` require at least PHP 7.0 to properly work.
 
-As you probally know, after isntall composer will download this package in a `vendor` folder in the
-root of your project. So you'll have to create the following file in the root directory.
+As you probally know, after composer install the dependencies will be downloaded
+inside a folder named `vendor` in the root of your project. So you'll have to
+create the following file in the root directory.
 
 ```php
 <?php
@@ -92,15 +93,19 @@ try {
 
 ```
 
-Now you must to create the `site`, `assets` and `plugins` folders in the root of your project too.
+Now you must to create the `site`, `assets` and `plugins` folders in the root of
+your project too. So some other files...
 
-```bash
-cd /path/to/your/awesome-project/
+```console
+$ cd /path/to/your/awesome-project/
 
-mkdir -p site/
-mkdir -p assets/
-mkdir -p plugins/
-
+$ mkdir -p site/01.home/
+$ mkdir -p site/02.blog/
+$ mkdir -p assets/css/
+$ mkdir -p assets/js/
+$ mkdir -p assets/fonts/
+$ mkdir -p assets/images/
+$ mkdir -p plugins/
 ```
 
 
