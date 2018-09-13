@@ -1,32 +1,84 @@
 # {{ title }}{.text-success}
 <hr>
 
-This project is build to be really easy to install and mainly to be updated with
-content. We decided to not include a database gateway because of this, the simple
-structure we want to get here.
+This project was designed to be really easy to install and mainly to be updated with
+your awesome content. We decided to not include a database persistence because of this, the simple
+structure we intent to keep here.
 
-There's two ways to install this project. The first is download as it is and simple
-modify this documents, as an example. The second and **recommanded** is use it
-as a lib with:
+### Require `CmThizer` via composer
 
-`composer require thizer/cmthizer`.
+`composer require thizer/cmthizer`
 
-As you probally know, it will download this package in a `vendor` folder in the
-root of your project. So you'll have to create the following file
-`DOCUMENT_ROOT/index.php`:
+--------
+
+## Step by step...
+
+### There's two ways to install `CmThizer`:
+
+> The first one is downloading it as it is and simple modify, add and delete this existing
+> documents. You may note that like this, your project will not be synchronized with `CmThizer`
+> repository so you will lost future updates, bug fixes and whatever...
+> 
+> <br/>
+> By this way, run `php composer.phar update` after download it
+
+> The second and **recommended** is use it as a lib so you will keep updating with
+`composer update`. Your project will be always synchronized with latest version of
+`CmThizer` and you will never lost a thing.
+
+### Assuming you will use it as recommended
+
+For first create the folder for your site and start a [composer](https://getcomposer.org/doc/01-basic-usage.md) project.
+Add `thizer/cmthizer` as a dependency and run `php composer.phar install`. Your `composer.json` file will look like this:
+
+```json
+{
+  "name" : "thegreat/awesome-project",
+  "description" : "Awesome Site",
+  "license" : "private",
+  "keywords" : ["site"],
+  "homepage" : "https://awesomesite.com",
+  "require" : {
+      "php" : ">=7.0",
+      "thizer/cmthizer" : "dev-master"
+  }
+}
+
+```
+
+* `CmThizer` require at least PHP 7.0 to properly work.
+
+As you probally know, after isntall composer will download this package in a `vendor` folder in the
+root of your project. So you'll have to create the following file in the root directory.
 
 ```php
 <?php
+
+/**
+ * This file must to be called `index.php`
+ */
+
 try {
   include_once './vendor/thizer/cmthizer/core/CmThizer.php';
   
   $cms = new CmThizer();
-  $cms->setSitePath(__DIR__.'/site/');
-  $cms->step1(); // alias to loadPlugins method
   
-//  $cms->getPlugin('MenusPages')->setActive(false);
+  // Set your site files folder
+  $cms->setSitePath(__DIR__.'/site/');
+  
+  // @todo: We need to adapt this method to receive an array of folders
+  // $cms->appendPluginsPath(__DIR__.'/plugins/');
+  
+  // alias to loadPlugins method
+  $cms->step1();
+  
+  // If you want to handle some loaded plugin...
+  // $cms->getPlugin('MenusPages')->setActive(false);
 
-  $cms->step2(); // alias to dispatchConfigs
+  // alias to dispatchConfigs
+  $cms->step2();
+  
+  // Dispatch 
   $cms->run();
   
 } catch (Throwable $e) {
@@ -39,3 +91,19 @@ try {
 }
 
 ```
+
+Now you must to create the `site`, `assets` and `plugins` folders in the root of your project too.
+
+```bash
+cd /path/to/your/awesome-project/
+
+mkdir -p site/
+mkdir -p assets/
+mkdir -p plugins/
+
+```
+
+
+
+
+ 

@@ -85,3 +85,24 @@
 
 .overflow-hidden { overflow: hidden; }
 
+code {
+	border-radius: 3px;
+  font-size: .875em;
+  color: #e83e8c;
+  word-break: break-word;
+  border: 1px solid #eee;
+  padding: 0 4px;
+  background-color: rgba(255,255,255,0.5);
+}
+
+blockquote {
+	color: #444;
+	margin: 0 0 1rem;
+  padding: 10px;
+  background-color: rgba(127,127,127,.1);
+  border: 1px solid rgba(127,127,127,.2);
+  border-radius: 5px;
+  box-shadow: inset 0 0 5px 0px rgba(0, 0, 0, 0.1);
+}
+blockquote p { margin: 0; }
+
