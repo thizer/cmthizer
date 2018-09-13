@@ -5,10 +5,9 @@
 	"keywords" : ["cms", "content", "management", "system", "blog", "site"],
 	"homepage" : "https://thizer.com",
 	"authors" : [{
-			"name" : "Thizer Apps",
-			"email" : "thizerdev@gmail.com"
-		}
-	],
+      "name" : "Thizer Apps",
+      "email" : "thizerdev@gmail.com"
+    }],
 	"support" : {
 		"email" : "thizerdev@gmail.com"
 	},
@@ -18,24 +17,23 @@
 	  }
 	},
 	"require" : {
-		"php" : ">=7.0",
-		"erusev/parsedown" : "1.8.0-beta-5",
-    "erusev/parsedown-extra": "dev-master",
-		"twig/twig": "^2.0",
-		"phpmailer/phpmailer" : "dev-master"
+      "php" : ">=7.0",
+      "erusev/parsedown-extra": "*",
+      "twig/twig": "^2",
+      "phpmailer/phpmailer" : "^v6"
 	},
 	"require-dev": {
-	  "phpunit/phpunit": "5.7.x-dev",
-    "php-coveralls/php-coveralls": "^v1" 
+	  "phpunit/phpunit": "^5",
+      "php-coveralls/php-coveralls": "^v1"
 	},
 	"autoload" : {
-		"classmap" : [
-			"./core/CmThizer.php"
-		]
+      "classmap" : [
+        "./core/CmThizer.php"
+      ]
 	},
 	"autoload-dev" : {
-		"psr-4" : {
-			"CmThizer\\" : "./core/"
-		}
+      "psr-4" : {
+        "CmThizer\\" : "./core/"
+      }
 	}
 }

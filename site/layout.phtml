@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <!-- <link rel="icon" href="../../../../favicon.ico"> -->
+    <!-- <link rel="icon" href="favicon.ico"> -->
 
     <title><?php echo $title; ?></title>
 
@@ -39,8 +39,8 @@
         </a>
         <?php if(isset($pages)): ?>
           <?php foreach ($pages as $url => $page): ?>
-            <?php if($url != $baseUrl): ?>
-              <a class="py-2 d-none d-md-inline-block" href="<?php echo $url; ?>"><?php echo $page; ?></a>
+            <?php if($this->url($url) != $baseUrl): ?>
+              <a class="py-2 d-none d-md-inline-block" href="<?php echo $this->url($url); ?>"><?php echo $page; ?></a>
             <?php endif; ?>
           <?php endforeach; ?>
         <?php endif; ?>
