@@ -28,7 +28,7 @@ class RobotsTxt extends AbstractPlugin {
         $txt .= "sitemap: ".$this->url('/sitemap.xml')."\n\n";
       }
 
-      $txt .= "Allow: *\n";
+      $txt .= "Allow: /\n";
       $txt .= "Disallow: /core\n";
       $txt .= "Disallow: /docs\n";
       $txt .= "Disallow: /plugins\n";
