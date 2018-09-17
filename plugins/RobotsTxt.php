@@ -22,19 +22,19 @@ class RobotsTxt extends AbstractPlugin {
     if ($this->getUri()->getRouteName() == '/robots.txt') {
       $txt = "User-Agent: *\n\n";
 
-      // @todo: This verification is not working here
-      $sitemapPlugin = $this->getPlugin('Sitemap');
-      if ($sitemapPlugin && $sitemapPlugin->isActive()) {
-        $txt .= "sitemap: ".$this->url('/sitemap.xml')."\n\n";
-      }
-
-      $txt .= "Allow: /\n";
       $txt .= "Disallow: /core\n";
       $txt .= "Disallow: /docs\n";
       $txt .= "Disallow: /plugins\n";
       $txt .= "Disallow: /site\n";
       $txt .= "Disallow: /var\n";
-      $txt .= "Disallow: /vendor\n\n";
+      $txt .= "Disallow: /vendor\n";
+      $txt .= "Allow: /\n\n";
+
+      // @todo: This verification is not working here
+      $sitemapPlugin = $this->getPlugin('Sitemap');
+      if ($sitemapPlugin && $sitemapPlugin->isActive()) {
+        $txt .= "sitemap: ".$this->url('/sitemap.xml')."\n\n";
+      }
 
       header("Content-type: text/plain");
       exit($txt);
