@@ -25,7 +25,7 @@ class RobotsTxt extends AbstractPlugin {
       $txt .= "Disallow: /core\n";
       $txt .= "Disallow: /docs\n";
       $txt .= "Disallow: /plugins\n";
-      $txt .= "Disallow: /site\n";
+      //$txt .= "Disallow: /site\n";
       $txt .= "Disallow: /var\n";
       $txt .= "Disallow: /vendor\n";
       $txt .= "Allow: /\n\n";
