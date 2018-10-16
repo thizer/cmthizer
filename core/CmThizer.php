@@ -447,6 +447,17 @@ class CmThizer {
     return $this->routes;
   }
 
+  public function appendRoute($title, $uri, $template, $content, $dirname): self {
+    $this->routes[$uri] = array(
+      'title' => $title,
+      'uri' => $uri,
+      'template' => $template,
+      'content' => $content,
+      'dirname' => $dirname
+    );
+    return $this;
+  }
+
   public function getCurrentRoute(): array {
     return $this->routes[$this->getUri()->getRouteName()] ?? array();
   }
