@@ -14,13 +14,13 @@ class LoadPlugins
     $this->cmThizerInstance = $cmThizerInstance;
 
     foreach ($pluginsPath as $path) {
-      
+
       $pluginsDir = scandir_recursive($path, true);
 
       foreach ($pluginsDir as $value) {
         if (is_array($value)) {
           foreach ($value as $subValue) {
-            if (is_file($subValue) && is_readable($subValue) && (pathinfo($subValue, PATHINFO_EXTENSION) == 'php')) {
+            if (!is_array($subValue) && is_file($subValue) && is_readable($subValue) && (pathinfo($subValue, PATHINFO_EXTENSION) == 'php')) {
 
               $this->append($subValue);
             }
