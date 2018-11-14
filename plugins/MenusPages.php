@@ -63,6 +63,12 @@ class MenusPages extends AbstractPlugin {
       }
     }
 
+    foreach ($menus as $menuName => $menuItems) {
+      $newItems = $menuItems;
+      uksort($newItems, array('MenusPages', 'sortArray'));
+      $menus[$menuName] = $newItems;
+    }
+
     $this->addViewVar('pages', $pages);
     $this->addViewVar('menus', $menus);
 
@@ -141,6 +147,42 @@ class MenusPages extends AbstractPlugin {
 
     $this->addViewVar('content', $content);
   }
+
+  /**
+   *  Make the ordenation trying to compare with created date in the URL.
+   *
+   * /blog/yyyy-mm-dd/something.html             <-- Ordenation BY DATE OK
+   * /blog/yy-mm-dd/something.html               <-- Ordenation BY DATE OK
+   * /blog/dd-mm-yyyy/something.html             <-- Ordenation BY DATE FALSE
+   * /blog/dd-mm-yy/something.html               <-- Ordenation BY DATE FALSE
+   * /blog/yyyy-mm-dd-something.html             <-- Ordenation BY DATE FALSE
+   *
+   * @param string $a
+   * @param string $b
+   * @return int
+   */
+  public static function sortArray($a, $b) {
+    if ($a == $b) { return 0; }
+
+    $tmspA = $a;
+    $itemsA = explode('/', $a);
+    foreach ($itemsA as $aItem) {
+      if (strtotime($aItem) !== false) {
+        $tmspA = strtotime($aItem);
+      }
+    }
+
+    $tmspB = $b;
+    $itemsB = explode('/', $b);
+    foreach ($itemsB as $bItem) {
+      if (strtotime($bItem) !== false) {
+        $tmspB = strtotime($bItem);
+      }
+    }
+
+    return ($tmspA<$tmspB);
+  }
+
 }
 
 
